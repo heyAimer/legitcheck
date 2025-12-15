@@ -1,12 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./app/**/*.{js,jsx}",
-    "./pages/**/*.{js,jsx}",
-    "./components/**/*.{js,jsx}",
-    // Add more paths if you have other folders
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./pages/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}", 
   ],
-  css: ["./src/app/globals.css"],
   theme: {
     extend: {},
   },
