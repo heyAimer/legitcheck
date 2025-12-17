@@ -71,3 +71,19 @@ Text: #475569
 Gradient Blobs: #2563EB → #7C3AED → #06B6D4
 Card BG: #FFFFFF
 Card Border: #E2E8F0
+
+Navbar
+↓
+Welcome banner
+↓
+Analyze contract (upload card)
+↓
+OR try sample
+↓
+Sample report preview
+↓
+Risk categories
+↓
+Signup wall (triggered)
+↓
+Trust strip

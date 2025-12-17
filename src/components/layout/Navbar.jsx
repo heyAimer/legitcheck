@@ -207,16 +207,26 @@ function ListItem({
   href,
   ...props
 }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link href={href}>
-          <div className="text-md leading-none font-medium mb-1">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-[14px] leading-snug">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  )
+    return (
+        <li {...props}> 
+            <NavigationMenuLink asChild>
+                <Link
+                    href={href}
+                    className="
+                        block rounded-md p-3
+                        transition-colors
+                        hover:bg-accent
+                        focus:bg-accent
+                        focus:outline-none
+                    "
+                >
+                    <div className="text-md leading-none font-medium mb-1">{title}</div>
+                    <p className="text-muted-foreground line-clamp-2 text-[14px] leading-snug">
+                        {children}
+                    </p>
+                </Link>
+            </NavigationMenuLink>
+        </li>
+    )
+    
 }
