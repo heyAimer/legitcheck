@@ -51,7 +51,7 @@ export const CARDS = [
 
 const OutcomeSection = () => {
   return (
-    <section className="px-6 md:py-14 py-10">
+    <section className="px-6 md:py-14 py-10 relative">
       <div className=" mx-auto max-w-7xl md:px-6 md:mb-14 mb-7 text-center">
           <h1 className="mx-auto max-w-3xl lg:text-5xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900">
               Know the risks before you sign
