@@ -133,9 +133,3 @@ export default function SignInForm() {
     </div>
   );
 }
-
-<div className="min-h-screen w-full bg-white relative">
-  {/* White Grid with Dots Background */}
-  
-     {/* Your Content/Components */}
-</div>
