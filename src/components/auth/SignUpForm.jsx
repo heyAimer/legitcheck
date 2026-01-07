@@ -1,4 +1,4 @@
-// src/app/auth/SignInForm.jsx
+
 "use client";
 
 import { useState } from "react";
@@ -10,17 +10,50 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
 export default function SignUpForm() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agreed: false,
+  });
+
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  function handleChange(e) {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
-    setIsLoading(true);
+    setError("");
 
+     if (!form.name || !form.email || !form.password || !form.confirmPassword) {
+      return setError("Please fill in all required fields.");
+    }
+
+    if (form.password.length < 8) {
+      return setError("Password must be at least 8 characters long.");
+    }
+
+    if (form.password !== form.confirmPassword) {
+      return setError("Passwords do not match.");
+    }
+
+    if (!form.agreed) {
+      return setError("You must agree to the Terms and Privacy Policy.");
+    }
     // Simulate auth (replace with your actual auth logic, e.g. NextAuth, Supabase, etc.)
+    setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      alert("Signed in! (Demo)");
-    }, 1500);
+      console.log("Signup form data:", form);
+    }, 1200);
   }
 
   return (
@@ -74,6 +107,22 @@ export default function SignUpForm() {
       <Card className="bg-white relative">
         <CardContent className="relative z-20">
           <form onSubmit={onSubmit} className="space-y-6">
+            <div>
+              <div className="mb-2">
+                <Label htmlFor="name">Full name</Label>
+              </div>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Alex Johnson"
+                value={form.name}
+                onChange={handleChange}
+                disabled={isLoading}
+                required
+              />
+            </div>
+
             <div className="">
               <div className="mb-2">
                 <Label htmlFor="email">Email address</Label>
@@ -81,6 +130,9 @@ export default function SignUpForm() {
               <Input
                 id="email"
                 type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
                 required
                 disabled={isLoading}
@@ -90,42 +142,81 @@ export default function SignUpForm() {
             <div className="">
               <div className="flex items-center justify-between mb-2">
                 <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Forgot password?
-                </Link>
               </div>
               <Input
                 id="password"
+                name="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Create a password"
+                value={form.password}
+                onChange={handleChange}
                 required
                 disabled={isLoading}
               />
             </div>
 
-            <div className="bg-green-200 flex">
-              <Link href="/signin" className="btn-primary btn2 cursor-pointer w-full ">
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Sign in
-              </Link>
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <Label htmlFor="confirmPassword">Confirm password</Label>
+              </div>
+              <Input
+                type="password"
+                name="confirmPassword"
+                placeholder="Re-enter your password"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                disabled={isLoading}
+                required
+              />
             </div>
+            
+            <div className="mb-4 flex items-start gap-2">
+              <input
+                type="checkbox"
+                name="agreed"
+                checked={form.agreed}
+                onChange={handleChange}
+                className="mt-1"
+              />
+              <p className="text-xs text-slate-600">
+                By creating an account, you agree to the{" "}
+                <Link href="/terms" className="text-blue-600 hover:underline">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy" className="text-blue-600 hover:underline">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+            </div>
+
+            {error && (
+              <p className="mb-4 text-sm text-red-600">
+                {error}
+              </p>
+            )}
+            
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="btn-primary btn2 cursor-pointer w-full "
+            >
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Create account
+            </Button>
           </form>
 
           <div className="pt-2">
-            <p className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
-              <span className="text-lg">🔒</span>
-              {/* Your contracts are encrypted in transit and at rest. */}
-              Your data is encrypted and handled securely.
+            <p className="mt-4 text-center text-xs text-slate-500">
+            🔒 Your contracts and personal data are encrypted and never shared.
             </p>
           </div>
           
           <div className="mt-6 text-center text-sm">
-            Don't have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline font-medium">
-              Create an account
+            Already have an account?{" "}
+            <Link href="/signin" className="text-primary hover:underline font-medium">
+              Sign in
             </Link>
           </div>
         </CardContent>

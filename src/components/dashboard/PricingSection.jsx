@@ -127,7 +127,7 @@ const PRICING = [
 ]
 const PricingSection = () => {
     return (
-        <section className="py-10 md:py-14 px-6 relative">
+        <section className="py-10 md:py-20 px-6 relative" id="pricing">
             <div className=" mx-auto max-w-7xl md:px-6 md:mb-14 mb-7 text-center">
                 <h1 className="mx-auto max-w-3xl lg:text-5xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900">
                     Simple, transparent pricing

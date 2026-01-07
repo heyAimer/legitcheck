@@ -23,13 +23,13 @@ import {
 const PRODUCT_ITEMS = [
   {
     title: "How it works",
-    href: "/how-it-works",
+    href: "#how-it-works",
     description:
       "Upload a contract and get clear risk highlights in under a minute.",
   },
   {
     title: "Risk analysis",
-    href: "/risk-analysis",
+    href: "#risk-analysis",
     description:
       "Instantly spot payment, IP, scope creep, and termination risks.",
   },
@@ -80,7 +80,7 @@ export function Navbar() {
                         <NavigationMenuList className="flex items-center">
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                <Link href="/home">Home</Link>
+                                <Link href="#hero">Home</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
@@ -121,7 +121,7 @@ export function Navbar() {
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                <Link href="/pricing">Pricing</Link>
+                                <Link href="#pricing">Pricing</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
@@ -133,7 +133,7 @@ export function Navbar() {
                     <Link href="/signin" className="btn btn-secondary cursor-pointer">
                         Sign in
                     </Link>
-                    <Link href="/tryFree" className="btn-primary btn cursor-pointer ">
+                    <Link href="/upload" className="btn-primary btn cursor-pointer shadow-blue-300 shadow-md hover:shadow-none">
                         Try free analysis
                     </Link>
                 </div>

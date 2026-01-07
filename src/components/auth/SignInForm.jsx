@@ -11,15 +11,32 @@ import Link from "next/link";
 
 export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [form , setForm] = useState({
+    email: "",
+    password: ""
+  });
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
 
   async function onSubmit(e) {
     e.preventDefault();
+    setError("");
+     
+    if (!form.email || !form.password) {
+      return setError("Please fill in all required fields.");
+    }
     setIsLoading(true);
 
     // Simulate auth (replace with your actual auth logic, e.g. NextAuth, Supabase, etc.)
     setTimeout(() => {
       setIsLoading(false);
-      alert("Signed in! (Demo)");
+      console.log("Sign in data:", form);
     }, 1500);
   }
 
@@ -81,6 +98,9 @@ export default function SignInForm() {
               <Input
                 id="email"
                 type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
                 required
                 disabled={isLoading}
@@ -100,17 +120,26 @@ export default function SignInForm() {
               <Input
                 id="password"
                 type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
                 placeholder="Enter your password"
                 required
                 disabled={isLoading}
               />
             </div>
 
-            <div className="bg-green-200 flex">
-              <Link href="/signin" className="btn-primary btn2 cursor-pointer w-full ">
+            {error && (
+              <p className="text-sm text-red-600">
+                {error}
+              </p>
+            )}
+            
+            <div className="flex">
+              <Button type="submit" disabled={isLoading} className="btn-primary btn2 w-full">
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign in
-              </Link>
+              </Button>
             </div>
           </form>
 

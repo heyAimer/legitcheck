@@ -158,7 +158,6 @@ pre,
 }
 .btn-primary {
   @apply bg-primary text-white hover:bg-primary-foreground font-semibold;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
 }
 .btn-secondary {
   @apply border-2 border-primary text-primary hover:bg-secondary-foreground hover:border-secondary-foreground font-semibold;
