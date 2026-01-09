@@ -1,9 +1,26 @@
+import GradientRing from "@/utils/GradientRings"
 import { AlertCircle, ShieldCheck, Zap } from "lucide-react"
 import Link from "next/link"
 
 const CTASection = () => {
     return (
         <section className="relative overflow-hidden px-6 py-20 md:h-screen justify-center items-center flex">
+            <GradientRing
+                className="
+                    -left-30 top-14
+                    h-[420px] w-[420px]
+                    bg-[radial-gradient(circle_at_center,#60a5fa,transparent_70%)]
+                "
+                />
+
+                <GradientRing
+                className="
+                    -right-30 bottom-2
+                    h-[380px] w-[380px]
+                    bg-[radial-gradient(circle_at_center,#a78bfa,transparent_70%)]
+                "
+            />
+            
             <div className=" relative mx-auto max-w-7xl md:px-6 md:py-24 text-center ">
                 <h1 className="mx-auto max-w-3xl lg:text-5xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900">
                    Sign with clarity, not assumptions

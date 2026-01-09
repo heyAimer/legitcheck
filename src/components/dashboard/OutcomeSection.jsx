@@ -63,7 +63,7 @@ const OutcomeSection = () => {
           </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:px-10 xl:px-26 md:px-24">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:px-26 md:px-10">
         {CARDS.map((c) => (
           <Card
             key={c.id}  

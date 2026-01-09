@@ -32,19 +32,7 @@ const PRODUCT_ITEMS = [
     href: "#risk-analysis",
     description:
       "Instantly spot payment, IP, scope creep, and termination risks.",
-  },
-  {
-    title: "Sample report",
-    href: "/sample-report",
-    description:
-      "See a real contract scan with highlighted risks and suggestions.",
-  },
-  {
-    title: "AI suggestions",
-    href: "/ai-suggestions",
-    description:
-      "Plain-English explanations with fix recommendations.",
-  },
+  }
 ]
 
 const USE_CASE_ITEMS = [
@@ -86,7 +74,7 @@ export function Navbar() {
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>Product</NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="grid gap-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2 p-4">
+                                    <ul className="grid gap-4 md:w-[400px] lg:w-[500px] p-4">
                                         {
                                             PRODUCT_ITEMS.map((item) => (
                                                 <ListItem
@@ -122,6 +110,12 @@ export function Navbar() {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                                 <Link href="#pricing">Pricing</Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+
+                            <NavigationMenuItem>
+                                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                                <Link href="#pricing">Sample report</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
