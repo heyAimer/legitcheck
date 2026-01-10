@@ -131,7 +131,30 @@ const MOCK_ANALYSIS_DB = {
       }
     ],
     isUnlocked: true
+  },
+
+  "extra":{
+    "status": "success",
+    "analysis_id": "ck_928374",
+    "risk_level": "high",
+    "summary": "This contract has unclear payment terms and broad IP transfer clauses.",
+    "clauses": [
+      {
+      
+        "id": "cl_1",
+        "category": "PAYMENT", 
+        // catergory 4 types: PAYMENT, INTELLECTUAL_PROPERTY, TERMINATION, LIABILITY
+        "severity": "HIGH",
+        "title": "Payment Terms",
+        "text": "Client will pay upon completion...",
+        "explanation": "The payment deadline is not clearly defined.",
+        "suggestion": "Add a fixed payment timeline, e.g. net 15 days."
+      }
+    ],
+    "disclaimer": "This analysis is for informational purposes only and is not legal advice.",
+    "created_at": "2026-01-08T14:21:00Z"
   }
+
 };
 
 /**

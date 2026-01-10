@@ -64,9 +64,16 @@ export default function UploadContractPage() {
           
             </div>
 
-            <p className="text-xs text-muted-foreground">
-              Takes approximately 30–60 seconds
-            </p>
+            <div className="text-xs text-muted-foreground text-center">
+              <p>
+                Files are processed securely and deleted after analysis.
+              </p>
+              <p className="mt-2">
+                Takes approximately 30–60 seconds
+              </p>
+              
+            </div>
+            
           </CardContent>
         </Card>
 
@@ -74,7 +81,7 @@ export default function UploadContractPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center text-xs text-muted-foreground">
           <div className="flex items-center justify-center gap-2">
             <ShieldCheck className="h-4 w-4" />
-            <span>We do not store your contracts</span>
+            <span>Contracts are processed securely and not saved</span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <Scale className="h-4 w-4" />
@@ -92,12 +99,10 @@ export default function UploadContractPage() {
             What you’ll get
           </h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>🚨 Red flags that could harm you</li>
-            <li>⚠️ Overall contract risk score</li>
-            <li>🧠 Plain-English explanation of clauses</li>
-            <li>❌ Clauses you should be careful about</li>
-            <li>✅ Clauses that are safe or standard</li>
-            <li>💡 What you can negotiate before signing</li>
+            <li>🚨 High-risk clauses that need attention</li>
+            <li>⚠️ Overall contract risk level</li>
+            <li>🧠 Plain-English clause explanations</li>
+            <li>💡 Negotiation suggestions before signing</li>
           </ul>
         </div>
 
@@ -117,7 +122,6 @@ export default function UploadContractPage() {
         <div className="text-xs text-muted-foreground text-center pt-6 border-t">
           This tool provides informational insights only and does not replace professional legal advice.
         </div>
-
       </div>
     </div>
   );

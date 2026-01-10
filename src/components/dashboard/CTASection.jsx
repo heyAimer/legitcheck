@@ -4,16 +4,16 @@ import Link from "next/link"
 
 const CTASection = () => {
     return (
-        <section className="relative overflow-hidden px-6 py-20 md:h-screen justify-center items-center flex">
+        <section className="relative overflow-hidden px-6 py-20 md:h-[80vh] justify-center items-center flex">
             <GradientRing
                 className="
                     -left-30 top-14
                     h-[420px] w-[420px]
                     bg-[radial-gradient(circle_at_center,#60a5fa,transparent_70%)]
                 "
-                />
+            />
 
-                <GradientRing
+            <GradientRing
                 className="
                     -right-30 bottom-2
                     h-[380px] w-[380px]

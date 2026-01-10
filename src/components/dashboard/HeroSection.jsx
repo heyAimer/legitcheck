@@ -6,7 +6,7 @@ export default function HeroSection() {
 
       <GradientRing
         className="
-          -left-30 top-4
+          -left-30 md:top-4 -top-20
           h-[420px] w-[420px]
           bg-[radial-gradient(circle_at_center,#60a5fa,transparent_70%)]
         "
@@ -14,7 +14,7 @@ export default function HeroSection() {
 
       <GradientRing
         className="
-          -right-30 bottom-4
+          -right-30 md:bottom-4 bottom-6
           h-[380px] w-[380px]
           bg-[radial-gradient(circle_at_center,#a78bfa,transparent_70%)]
         "
