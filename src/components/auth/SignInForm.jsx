@@ -8,8 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,6 +27,26 @@ export default function SignInForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/signin`, {
+        email: form.email,
+        password: form.password,
+      });
+      console.log("SignIn response:", response.data);
+      if (response.data.success) {
+        toast.success("Sign in successful");
+        router.push("/");
+      } else {
+        setError(response.data.message || "Signin failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during signin:", error);
+      setError("Something went wrong. Please try again later.");
+    }finally {
+      setIsLoading(false);
+    }
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -33,11 +57,7 @@ export default function SignInForm() {
     }
     setIsLoading(true);
 
-    // Simulate auth (replace with your actual auth logic, e.g. NextAuth, Supabase, etc.)
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Sign in data:", form);
-    }, 1500);
+    handleSignIn(); 
   }
 
   return (
@@ -111,7 +131,7 @@ export default function SignInForm() {
               <div className="flex items-center justify-between mb-2">
                 <Label htmlFor="password">Password</Label>
                 <Link
-                  href="/forgot-password"
+                  href="/signin/forgotpassword"
                   className="text-sm text-primary hover:underline"
                 >
                   Forgot password?

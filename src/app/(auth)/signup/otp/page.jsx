@@ -1,8 +1,6 @@
 // src/app/signin/page.jsx
+import OtpVerify from "@/components/auth/OtpVerify";
 
-import AuthHeader from "@/components/auth/AuthHeader";
-import SignInForm from "@/components/auth/SignInForm";
-import SignUpForm from "@/components/auth/SignUpForm";
 import Link from "next/link";
 
 export default function SignUpPage() {
@@ -13,17 +11,13 @@ export default function SignUpPage() {
       </Link>
 
       <div className="w-full max-w-md space-y-8">
-        <AuthHeader
-          title="Create your account"
-          description="Run contract risk checks and keep your reports in one place."
-        />
-        <SignUpForm />
+        <OtpVerify />
       </div>
     </main>
   );
 }
 
 export const metadata = {
-  title: "Sign Up - LegitCheck",
-  description: "Create your LegitCheck account",
+  title: "OTP - LegitCheck",
+  description: "Verify your email to complete registration",
 };

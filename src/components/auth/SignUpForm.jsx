@@ -8,8 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function SignUpForm() {
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -27,13 +33,63 @@ export default function SignUpForm() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    if (name === "confirmPassword") {
+      if (value !== form.password) {
+        setError("Passwords do not match.");
+      } else {
+        setError("");
+      }
+    }
+    if (name === "password" && form.confirmPassword) {
+      if (value !== form.confirmPassword) {
+        setError("Passwords do not match.");
+      } else {
+        setError("");
+      }
+    }
+  }
+
+  const handleSignUp = async () => { 
+    
+    try {
+      const response = await axios.post(`${BASE_URL}/signup`, {
+        email: form.email,
+        password: form.password,
+        confirmPassword: form.confirmPassword,
+      });
+      console.log("Signup successful:", response.data); 
+      
+      if (response.data.success) {
+        toast.success("Signup successful! Check your email for the OTP to verify your account");
+
+        setForm({
+          email: "",
+          password: "",
+          confirmPassword: "",
+          agreed: false,
+        })
+
+        setTimeout(() => {
+          router.push("/otp");
+        },800)
+      } else {
+        setError(response.data.message || "Signup failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      setError("Something went wrong. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+
   }
 
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
 
-     if (!form.name || !form.email || !form.password || !form.confirmPassword) {
+    if (!form.name || !form.email || !form.password || !form.confirmPassword) {
       return setError("Please fill in all required fields.");
     }
 
@@ -48,12 +104,11 @@ export default function SignUpForm() {
     if (!form.agreed) {
       return setError("You must agree to the Terms and Privacy Policy.");
     }
-    // Simulate auth (replace with your actual auth logic, e.g. NextAuth, Supabase, etc.)
+    
+    //backend api
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Signup form data:", form);
-    }, 1200);
+    handleSignUp();
+
   }
 
   return (
@@ -107,22 +162,7 @@ export default function SignUpForm() {
       <Card className="bg-white relative">
         <CardContent className="relative z-20">
           <form onSubmit={onSubmit} className="space-y-6">
-            <div>
-              <div className="mb-2">
-                <Label htmlFor="name">Full name</Label>
-              </div>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Alex Johnson"
-                value={form.name}
-                onChange={handleChange}
-                disabled={isLoading}
-                required
-              />
-            </div>
-
+          
             <div className="">
               <div className="mb-2">
                 <Label htmlFor="email">Email address</Label>
