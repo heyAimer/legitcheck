@@ -48,6 +48,20 @@ export default function SignInForm() {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/oauth/login`);
+      console.log("Google Signin response:", response.data);
+      toast.success("Redirecting to Google Sign-In...");
+      
+      
+    } catch (error) {
+      console.error("Error during Google signin:", error);
+      setError("Something went wrong with Google Sign-In. Please try again later.");
+      toast.error("Google Sign-In failed");
+    }
+   }
+
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
@@ -159,6 +173,24 @@ export default function SignInForm() {
               <Button type="submit" disabled={isLoading} className="btn-primary btn2 w-full">
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign in
+              </Button>
+            </div>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or
+                </span>
+              </div>
+            </div>
+
+            <div className="flex">
+              <Button onclick={() => {handleGoogleSignIn()}} disabled={isLoading} className="btn-secondary btn w-full">
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Sign in with Google
               </Button>
             </div>
           </form>
