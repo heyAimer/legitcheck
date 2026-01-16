@@ -17,7 +17,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 export default function SignUpForm() {
   const router = useRouter();
   const [form, setForm] = useState({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -57,10 +56,12 @@ export default function SignUpForm() {
         email: form.email,
         password: form.password,
         confirmPassword: form.confirmPassword,
-      });
+      },
+      { withCredentials: true }
+      );
       console.log("Signup successful:", response.data); 
       
-      if (response.data.success) {
+      if (response.data.status) {
         toast.success("Signup successful! Check your email for the OTP to verify your account");
 
         setForm({
@@ -71,7 +72,7 @@ export default function SignUpForm() {
         })
 
         setTimeout(() => {
-          router.push("/otp");
+          router.push("signup/otp");
         },800)
       } else {
         setError(response.data.message || "Signup failed. Please try again.");
@@ -89,7 +90,7 @@ export default function SignUpForm() {
     e.preventDefault();
     setError("");
 
-    if (!form.name || !form.email || !form.password || !form.confirmPassword) {
+    if (!form.email || !form.password || !form.confirmPassword) {
       return setError("Please fill in all required fields.");
     }
 

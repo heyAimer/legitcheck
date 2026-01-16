@@ -56,7 +56,6 @@ export default function SignInForm() {
       const response = await axios.get(`${BASE_URL}/oauth/login`);
       console.log("Google Signin response:", response.data);
       toast.success("Redirecting to Google Sign-In...");
-
       
     } catch (error) {
       console.error("Error during Google signin:", error);

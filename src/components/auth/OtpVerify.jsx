@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import axios from "axios";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState("");
@@ -29,15 +32,24 @@ export default function OtpVerify() {
     setIsLoading(true);
 
     try {
+      console.log(otp);
+      console.log(typeof otp);
       // Simulate API call
-      await new Promise((res) => setTimeout(res, 1200));
-
-      // Success toast
+      const response = await axios.post(`${BASE_URL}/signup/otp`,
+        {otp},
+        {
+          withCredentials: true,
+          headers: {
+          "Content-Type": "application/json",
+          }
+        }
+        );
+      console.log("OTP verify response:", response);
       toast.success("OTP verified successfully!");
-      // Redirect to dashboard or wherever
-      // router.push("/dashboard");
+      router.push("/");
     } catch (err) {
-      toast.error("Invalid OTP. Please try again.");
+      toast.error("error while otp", err);
+      console.log("Error during OTP verification:", err);
     } finally {
       setIsLoading(false);
     }
