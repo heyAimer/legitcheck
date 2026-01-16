@@ -12,6 +12,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+
 export default function SignInForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,15 +52,18 @@ export default function SignInForm() {
 
   const handleGoogleSignIn = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(`${BASE_URL}/oauth/login`);
       console.log("Google Signin response:", response.data);
       toast.success("Redirecting to Google Sign-In...");
-      
+
       
     } catch (error) {
       console.error("Error during Google signin:", error);
       setError("Something went wrong with Google Sign-In. Please try again later.");
       toast.error("Google Sign-In failed");
+    }finally {
+      setIsLoading(false);
     }
    }
 
@@ -186,14 +191,14 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-
-            <div className="flex">
-              <Button onclick={() => {handleGoogleSignIn()}} disabled={isLoading} className="btn-secondary btn w-full">
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Sign in with Google
-              </Button>
-            </div>
           </form>
+
+          <div className="flex">
+            <Button onClick={() => {handleGoogleSignIn()}} disabled={isLoading} className="btn-secondary btn w-full cursor-pointer">
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Sign in with Google
+            </Button>
+          </div>
 
           <div className="pt-2">
             <p className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
