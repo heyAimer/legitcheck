@@ -1,7 +1,7 @@
 // src/app/auth/SignInForm.jsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,15 @@ export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+
+    if (error) {
+      toast.error("Google sign-in failed");
+    }
+  }, []);
+ 
   const [form , setForm] = useState({
     email: "",
     password: ""
@@ -35,36 +44,34 @@ export default function SignInForm() {
         email: form.email,
         password: form.password,
       });
-      console.log("SignIn response:", response.data);
-      if (response.data.success) {
-        toast.success("Sign in successful");
-        router.push("/");
-      } else {
-        setError(response.data.message || "Signin failed. Please try again.");
-      }
+
+      toast.success("Signin successful");
+
+      setForm({
+        email: "",
+        password: "",
+      })
+      
     } catch (error) {
-      console.error("Error during signin:", error);
-      setError("Something went wrong. Please try again later.");
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "Signin failed";
+        setForm({
+        email: "",
+        password: "",
+      })
+        toast.error(message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     }finally {
       setIsLoading(false);
     }
   }
 
   const handleGoogleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get(`${BASE_URL}/oauth/login`);
-      console.log("Google Signin response:", response.data);
-      toast.success("Redirecting to Google Sign-In...");
-      
-    } catch (error) {
-      console.error("Error during Google signin:", error);
-      setError("Something went wrong with Google Sign-In. Please try again later.");
-      toast.error("Google Sign-In failed");
-    }finally {
-      setIsLoading(false);
-    }
-   }
+    setIsLoading(true);
+    window.location.href = (`${BASE_URL}/oauth/login`);
+  }
 
   async function onSubmit(e) {
     e.preventDefault();

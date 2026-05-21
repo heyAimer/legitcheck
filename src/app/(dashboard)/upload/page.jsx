@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, ShieldCheck, Scale, Brain } from "lucide-react";
@@ -9,7 +9,11 @@ import Link from "next/link";
 const DEV_ANALYSIS_ID = "demo-locked";
 
 export default function UploadContractPage() {
-  
+  const uploadFile = useRef(null);
+  const handleButtonClick = () => {
+    uploadFile.current.click();
+  }
+
   return (
     <div className="min-h-screen bg-background px-4 py-12">
       <div className="mx-auto max-w-3xl space-y-12">
@@ -41,6 +45,7 @@ export default function UploadContractPage() {
             {/* Hidden file input (connect later) */}
             <input
               type="file"
+              ref={uploadFile}
               accept=".pdf,.doc,.docx,.txt"
               className="hidden"
             />
@@ -51,9 +56,11 @@ export default function UploadContractPage() {
 
             <div className="mt-10 flex    flex-col items-center justify-center gap-4 sm:flex-row">
               
-              <Link href="/upload" className="btn-primary btn3 cursor-pointer ">
+              <button className="btn-primary btn3 cursor-pointer "
+                onClick={handleButtonClick}
+              >
                   Upload contract
-              </Link>
+              </button>
 
               <Link
                 href={`/analysis/${DEV_ANALYSIS_ID}`}

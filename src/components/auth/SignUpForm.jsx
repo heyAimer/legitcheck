@@ -59,27 +59,34 @@ export default function SignUpForm() {
       },
       { withCredentials: true }
       );
-      console.log("Signup successful:", response.data); 
       
-      if (response.data.status) {
-        toast.success("Signup successful! Check your email for the OTP to verify your account");
+      toast.success("Signup successful! Check your email for the OTP to verify your account");
 
-        setForm({
-          email: "",
-          password: "",
-          confirmPassword: "",
-          agreed: false,
-        })
+      setForm({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        agreed: false,
+      })
 
-        setTimeout(() => {
-          router.push("signup/otp");
-        },800)
-      } else {
-        setError(response.data.message || "Signup failed. Please try again.");
-      }
+      setTimeout(() => {
+        router.push("signup/otp");
+      },800)
+      
     } catch (error) {
-      console.error("Error during signup:", error);
-      setError("Something went wrong. Please try again later.");
+
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "Signup failed";
+        setForm({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        agreed: false,
+      })
+        toast.error(message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

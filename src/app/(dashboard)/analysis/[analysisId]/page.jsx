@@ -12,7 +12,6 @@ import PaywallSection from "@/components/analysis/PaywallSection";
 export default async function AnalysisResultPage({ params }) {
   const resolvedParams = await params;
   const { analysisId } = resolvedParams;
-  console.log(resolvedParams)
   let analysis;
   try {
     analysis = await getMockAnalysisById(analysisId);

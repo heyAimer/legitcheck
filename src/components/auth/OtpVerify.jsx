@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function OtpVerify() {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const OTP_LENGTH = 6; // customize number of digits
 
@@ -32,9 +34,6 @@ export default function OtpVerify() {
     setIsLoading(true);
 
     try {
-      console.log(otp);
-      console.log(typeof otp);
-      // Simulate API call
       const response = await axios.post(`${BASE_URL}/signup/otp`,
         {otp},
         {
@@ -43,13 +42,19 @@ export default function OtpVerify() {
           "Content-Type": "application/json",
           }
         }
-        );
-      console.log("OTP verify response:", response);
-      toast.success("OTP verified successfully!");
+      );
+      toast.success(response.data.message || "OTP verified successfully!");
       router.push("/");
     } catch (err) {
-      toast.error("error while otp", err);
-      console.log("Error during OTP verification:", err);
+      if (axios.isAxiosError(err)) {
+        const message =
+          err.response?.data?.message || "OTP verification failed";
+        toast.error(message);
+      } else {
+        toast.error("Something went wrong");
+      }
+
+      console.error("Error during OTP verification:", err);
     } finally {
       setIsLoading(false);
     }

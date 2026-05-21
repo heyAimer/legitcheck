@@ -23,13 +23,13 @@ import {
 const PRODUCT_ITEMS = [
   {
     title: "How it works",
-    href: "#how-it-works",
+    href: "how-it-works",
     description:
       "Upload a contract and get clear risk highlights in under a minute.",
   },
   {
     title: "Risk analysis",
-    href: "#risk-analysis",
+    href: "risk-analysis",
     description:
       "Instantly spot payment, IP, scope creep, and termination risks.",
   }
@@ -53,6 +53,19 @@ const USE_CASE_ITEMS = [
   },
 ]
 
+const scrollToSection = (id) => {
+    const section = document.getElementById(id)
+
+    if (section) {
+        section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        })
+    } else {
+        window.location.href = `/#${id}`
+    }
+}
+    
 export function Navbar() {
 
     return (
@@ -68,7 +81,7 @@ export function Navbar() {
                         <NavigationMenuList className="flex items-center">
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                <Link href="#hero">Home</Link>
+                                <Link href="/">Home</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
@@ -109,13 +122,13 @@ export function Navbar() {
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                <Link href="#pricing">Pricing</Link>
+                                <button onClick={() => scrollToSection("pricing")}>Pricing</button>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                <Link href="#pricing">Sample report</Link>
+                                <button onClick={() => scrollToSection("pricing")}>Sample report</button>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
@@ -174,14 +187,14 @@ function MobileNav() {
                 <p className="mb-4 text-sm text-muted-foreground">Use cases</p>
                 <div className="flex flex-col gap-2">
                 {USE_CASE_ITEMS.map((item) => (
-                    <Link key={item.title} href={item.href}>
+                    <button onClick={() => scrollToSection(item.href)} key={item.title}>
                     {item.title}
-                    </Link>
+                    </button>
                 ))}
                 </div>
             </div>
 
-            <Link href="/pricing">Pricing</Link>
+            <button onClick={() => scrollToSection("pricing")}>Pricing</button>
 
             <div className="border-t pt-6 flex flex-col gap-3 text-center text-sm font-medium">
                 <Link href="/signin" className="btn2 btn-secondary cursor-pointer">
