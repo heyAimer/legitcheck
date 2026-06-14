@@ -1,4 +1,12 @@
-// src/components/analysis/RiskCategoryBreakdown.jsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "../ui/badge";
 
 export default function RiskCategoryBreakdown({ categories }) {
   return (
@@ -7,17 +15,38 @@ export default function RiskCategoryBreakdown({ categories }) {
         Risk Breakdown
       </h2>
 
-      <ul className="grid grid-cols-2 gap-4">
-        {categories.map((cat) => (
-          <li
-            key={cat.key}
-            className="flex justify-between border rounded-md px-4 py-3"
-          >
-            <span>{cat.key}</span>
-            <span className="font-medium">{cat.level}</span>
-          </li>
-        ))}
-      </ul>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[75%]">Category</TableHead>
+            <TableHead>Risk Level</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {categories.map((cat) => (
+            <TableRow key={cat.key} className="">
+              <TableCell className="whitespace-normal break-words">
+                {cat.key}
+              </TableCell>
+
+              <TableCell>
+                <Badge
+                  className={
+                    cat.level === "HIGH"
+                      ? "bg-red-200/10 text-red-600 border-red-500/20"
+                      : cat.level === "MEDIUM"
+                      ? "bg-yellow-200/10 text-yellow-600 border-yellow-500/20"
+                      : "bg-green-200/10 text-green-600 border-green-500/20"
+                  }
+                >
+                  {cat.level}
+                </Badge>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </section>
   );
 }

@@ -19,6 +19,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { useAuth } from "@/utils/hooks/useAuth";
+import { Button } from "../ui/button";
 
 const PRODUCT_ITEMS = [
   {
@@ -54,6 +56,7 @@ const USE_CASE_ITEMS = [
 ]
 
 const scrollToSection = (id) => {
+    console.log("Auth status in scrollToSection:", data);
     const section = document.getElementById(id)
 
     if (section) {
@@ -65,9 +68,18 @@ const scrollToSection = (id) => {
         window.location.href = `/#${id}`
     }
 }
-    
-export function Navbar() {
 
+export function Navbar() {
+    const { data, isLoading, error } = useAuth();
+
+    const userLoggedIn = data?.data?.authenticated;
+    
+    console.log("Auth status:", data?.data?.authenticated); // true
+    console.log("Auth loading:", isLoading); //false
+    console.log("Auth error:", error);
+
+    if (error) return <div className="justify-center items-center flex w-full h-screen font-semibold text-2xl">Error checking auth.</div>;
+    
     return (
         <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md">
            
@@ -126,24 +138,32 @@ export function Navbar() {
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
-                                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                <button onClick={() => scrollToSection("pricing")}>Sample report</button>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-
                         </NavigationMenuList>
                     </NavigationMenu>
                 </div>
                 
-                <div className="hidden md:flex gap-4 items-center">
-                    <Link href="/signin" className="btn btn-secondary cursor-pointer">
-                        Sign in
-                    </Link>
-                    <Link href="/upload" className="btn-primary btn cursor-pointer shadow-blue-300 shadow-md hover:shadow-none">
-                        Try free analysis
-                    </Link>
-                </div>
+                {!userLoggedIn ? (
+                    <div className="hidden md:flex gap-4 items-center">
+                        <Link href="/signin" className="btn btn-secondary cursor-pointer">
+                            <Button>
+                                Sign in
+                            </Button>
+                        </Link>
+                        <Link href="/signup" className="btn btn-secondary cursor-pointer">
+                            <Button>
+                                Sign up
+                            </Button>
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="hidden md:flex gap-4 items-center">
+                            <Link href="/upload">
+                                <Button>
+                                    Try free analysis
+                                </Button>
+                        </Link>
+                    </div>
+                )}
 
                 <div className="md:hidden">
                     <Sheet>

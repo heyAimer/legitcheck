@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
-import "./globals.scss";
+import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import QueryProvider from "@/utils/providers/QueryProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.variable} ${mono.variable} font-sans antialiased`}
       >
-        {children}
+        <QueryProvider>
+          {children}
+        </QueryProvider>
         <Toaster position="top-right"/>
       </body>
     </html>

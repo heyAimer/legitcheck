@@ -1,0 +1,46 @@
+export const jurisdictions = [
+  { label: "🇮🇳 India", value: "india" },
+  { label: "🇺🇸 United States", value: "united_states" },
+  { label: "🇬🇧 United Kingdom", value: "united_kingdom" },
+  { label: "🇨🇦 Canada", value: "canada" },
+  { label: "🇦🇺 Australia", value: "australia" },
+  { label: "🇳🇿 New Zealand", value: "new_zealand" },
+
+  { label: "🇩🇪 Germany", value: "germany" },
+  { label: "🇫🇷 France", value: "france" },
+  { label: "🇪🇸 Spain", value: "spain" },
+  { label: "🇮🇹 Italy", value: "italy" },
+  { label: "🇳🇱 Netherlands", value: "netherlands" },
+  { label: "🇧🇪 Belgium", value: "belgium" },
+  { label: "🇨🇭 Switzerland", value: "switzerland" },
+  { label: "🇦🇹 Austria", value: "austria" },
+  { label: "🇮🇪 Ireland", value: "ireland" },
+  { label: "🇵🇹 Portugal", value: "portugal" },
+  { label: "🇸🇪 Sweden", value: "sweden" },
+  { label: "🇳🇴 Norway", value: "norway" },
+  { label: "🇩🇰 Denmark", value: "denmark" },
+  { label: "🇫🇮 Finland", value: "finland" },
+  { label: "🇵🇱 Poland", value: "poland" },
+  { label: "🇨🇿 Czech Republic", value: "czech_republic" },
+
+  { label: "🇸🇬 Singapore", value: "singapore" },
+  { label: "🇭🇰 Hong Kong", value: "hong_kong" },
+  { label: "🇯🇵 Japan", value: "japan" },
+  { label: "🇰🇷 South Korea", value: "south_korea" },
+  { label: "🇨🇳 China", value: "china" },
+  { label: "🇹🇼 Taiwan", value: "taiwan" },
+
+  { label: "🇦🇪 United Arab Emirates", value: "uae" },
+  { label: "🇸🇦 Saudi Arabia", value: "saudi_arabia" },
+  { label: "🇶🇦 Qatar", value: "qatar" },
+  { label: "🇰🇼 Kuwait", value: "kuwait" },
+
+  { label: "🇿🇦 South Africa", value: "south_africa" },
+  { label: "🇪🇬 Egypt", value: "egypt" },
+
+  { label: "🇧🇷 Brazil", value: "brazil" },
+  { label: "🇲🇽 Mexico", value: "mexico" },
+  { label: "🇦🇷 Argentina", value: "argentina" },
+  { label: "🇨🇱 Chile", value: "chile" },
+  { label: "❓ Other", value: "other" }
+];

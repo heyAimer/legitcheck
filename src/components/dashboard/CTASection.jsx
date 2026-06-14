@@ -1,6 +1,7 @@
 import GradientRing from "@/utils/GradientRings"
 import { AlertCircle, ShieldCheck, Zap } from "lucide-react"
 import Link from "next/link"
+import { Button } from "../ui/button"
 
 const CTASection = () => {
     return (
@@ -36,8 +37,10 @@ const CTASection = () => {
                 </p> */}
 
                  <div className=" flex flex-col items-center justify-center gap-4 sm:flex-row md:mt-10 mt-8">
-                    <Link href="/tryFree" className="btn-primary md:btn4 btn3 cursor-pointer md:text-lg ">
-                        Try free analysis
+                    <Link href="/upload">
+                        <Button size="lg" >
+                            Analyse Contract Now
+                        </Button>
                     </Link>
                 </div>
             </div>

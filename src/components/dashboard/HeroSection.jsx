@@ -1,5 +1,6 @@
 import GradientRing from "@/utils/GradientRings";
 import Link from "next/link";
+import { Button } from "../ui/button";
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden px-6 py-20">
@@ -40,15 +41,18 @@ export default function HeroSection() {
 
         {/* CTAs */}
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link href="/upload" className="btn-primary btn3 cursor-pointer shadow-blue-300 shadow-md hover:shadow-none">
-              Try free analysis
+          <Link href="/upload">
+            <Button size="lg">
+              Analyze Contract
+            </Button>
           </Link>
 
           <Link
             href="/sample-report"
-            className="btn3 btn-secondary"
           >
-            View sample report
+            <Button className="" variant="secondary" size="lg">
+              Watch demo
+            </Button>
           </Link>
         </div>
       </div>
