@@ -11,9 +11,12 @@ import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import {useQueryClient } from "@tanstack/react-query";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const queryClient = useQueryClient();
+  
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,10 +29,14 @@ export default function ForgotPassword() {
     try {
       const response = await axios.post(`${BASE_URL}/login/forgotpassword`, {
         email: form.email
-      });
-      if (response.data.success) {
-        toast.success("OTP has been sent to your email.");
-        setEmail("");
+      },{withCredentials:true});
+      
+      if (response.data.status === "Success") {
+        await queryClient.invalidateQueries({
+          queryKey: ["auth"],
+        });
+        toast.success("Signin successful");
+        router.push("/");
       } else {
         setError(response.data.message || "Something went wrong.");
       }

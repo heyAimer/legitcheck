@@ -5,12 +5,18 @@ import NegotiationSection from "@/components/analysis/NegotiationSection";
 import RedFlagsSection from "@/components/analysis/RedFlagsSection";
 import RiskCategoryBreakdown from "@/components/analysis/RiskCategoryBreakdown";
 import RiskScoreHeader from "@/components/analysis/RiskScoreHeader";
+import { useAuth } from "@/utils/hooks/useAuth";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function AnalysisResultPage() {
+
+  const router = useRouter();
+  const { data, isLoading, error } = useAuth();
 
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,6 +38,27 @@ export default function AnalysisResultPage() {
   useEffect(() => {
     analyse();
   }, []);
+
+  useEffect(() => {
+    if (!isLoading && !data?.data?.authenticated) {
+      router.push("/signin");
+    }
+  }, [data, isLoading, router]);
+
+  if (isLoading ||!data?.data?.authenticated || loading) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-150px)] ">
+        <Loader2 className="h-12 w-12 animate-spin" />
+      </div>
+    );
+  }
+  
+   if (error) {
+    <div className="font-semibold flex items-center justify-center h-[calc(100vh-150px)] gap-4">
+      <WifiOff className="h-8 w-8 text-red-500" />
+      <div className="text-2xl">Network Error</div>
+    </div>
+  }
 
   return (
     <div>

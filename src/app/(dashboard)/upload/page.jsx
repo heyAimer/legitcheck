@@ -1,8 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, ShieldCheck, Scale, Brain, X, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Upload, ShieldCheck, Scale, Brain, X, Loader2, WifiOff } from "lucide-react";
+
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -10,11 +10,14 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { jurisdictions } from "@/utils/CountryNames";
+import { useAuth } from "@/utils/hooks/useAuth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function UploadContractPage() {
   const router = useRouter();
+  const { data, isLoading, error } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectFile, setSelectFile] = useState(null);
@@ -32,15 +35,14 @@ export default function UploadContractPage() {
     formdata.append("location", jurisdiction);
 
     try {
-      const res = await axios.post(`${BASE_URL}/scan`, formdata, {
+      const response = await axios.post(`${BASE_URL}/scan`, formdata, {
         withCredentials: true,
       });
 
-      if (res.data.status === "Success") {
-        toast.success(res.data.message);
+      if (response.data.status === "Success") {
+        toast.success(response.data.message);
         router.push(`/analysis`);
       }
-      //window.location.href = `/analysis/${res.data.id}`;
     } catch (error) {
       console.error("Error uploading file:", error);
       setSelectFile(null);
@@ -68,7 +70,27 @@ export default function UploadContractPage() {
   const handleButtonClick = () => {
     uploadFile.current.click();
   }
+  
+  useEffect(() => {
+    if (!isLoading && !data?.data?.authenticated) {
+      router.push("/signin");
+    }
+  }, [data, isLoading, router]);
 
+  if (isLoading ||!data?.data?.authenticated) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-150px)] ">
+        <Loader2 className="h-12 w-12 animate-spin" />
+      </div>
+    );
+  }
+  
+  if (error) {
+    <div className="font-semibold flex items-center justify-center h-[calc(100vh-150px)] gap-4">
+      <WifiOff className="h-8 w-8 text-red-500" />
+      <div className="text-2xl">Network Error</div>
+    </div>
+  }
   return (
     <div className="min-h-screen bg-background px-4 py-12">
       <div className="mx-auto max-w-3xl space-y-12">

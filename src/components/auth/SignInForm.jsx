@@ -11,12 +11,15 @@ import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import {useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function SignInForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -40,13 +43,25 @@ export default function SignInForm() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/signin`, {
+      setIsLoading(true);
+      const response = await axios.post(`${BASE_URL}/login`, {
         email: form.email,
         password: form.password,
-      });
+      },
+        {
+          withCredentials: true,
+        }
+      );
 
-      toast.success("Signin successful");
+      if (response.data.status === "Success") {
 
+        await queryClient.invalidateQueries({
+          queryKey: ["auth"],
+        });
+        toast.success(response.data.message);
+        router.push("/");
+      }
+      
       setForm({
         email: "",
         password: "",
@@ -69,8 +84,9 @@ export default function SignInForm() {
   }
 
   const handleGoogleSignIn = async () => {
-    setIsLoading(true);
+    setIsGoogleLoading(true);
     window.location.href = (`${BASE_URL}/oauth/login`);
+    router.push("/")
   }
 
   async function onSubmit(e) {
@@ -132,7 +148,7 @@ export default function SignInForm() {
           WebkitMaskComposite: "source-in",
           }}
       />
-      
+      {isLoading && <div className="flex justify-center items-center"><Loader2 className="h-12 w-12 animate-spin" /></div>}
       <Card className="bg-white relative">
         <CardContent className="relative z-20">
           <form onSubmit={onSubmit} className="space-y-6">
@@ -200,8 +216,8 @@ export default function SignInForm() {
           </form>
 
           <div className="flex">
-            <Button onClick={() => {handleGoogleSignIn()}} disabled={isLoading} className="btn-secondary btn w-full cursor-pointer">
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button onClick={() => {handleGoogleSignIn()}} disabled={isGoogleLoading} className="btn-secondary btn w-full cursor-pointer">
+              {isGoogleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign in with Google
             </Button>
           </div>

@@ -1,9 +1,15 @@
+'use client'
 import GradientRing from "@/utils/GradientRings"
 import { AlertCircle, ShieldCheck, Zap } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
+import { useAuth } from "@/utils/hooks/useAuth";
 
 const CTASection = () => {
+     const { data } = useAuth();
+
+    const userLoggedIn = data?.data?.authenticated === true;
+    
     return (
         <section className="relative overflow-hidden px-6 py-20 md:h-[80vh] justify-center items-center flex">
             <GradientRing
@@ -37,7 +43,7 @@ const CTASection = () => {
                 </p> */}
 
                  <div className=" flex flex-col items-center justify-center gap-4 sm:flex-row md:mt-10 mt-8">
-                    <Link href="/upload">
+                    <Link href={userLoggedIn ? "/upload" : "/signin"}>
                         <Button size="lg" >
                             Analyse Contract Now
                         </Button>

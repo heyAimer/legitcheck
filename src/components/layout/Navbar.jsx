@@ -1,5 +1,5 @@
 "use client"
-import * as React from "react"
+
 import Link from "next/link"
 import { Menu } from "lucide-react";
 
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sheet"
 import { useAuth } from "@/utils/hooks/useAuth";
 import { Button } from "../ui/button";
+import { useEffect } from "react";
 
 const PRODUCT_ITEMS = [
   {
@@ -69,12 +70,10 @@ const scrollToSection = (id) => {
 }
 
 export function Navbar() {
-    const { data, isLoading, error } = useAuth();
+    const { data} = useAuth();
 
-    const userLoggedIn = data?.data?.authenticated;
+    const userLoggedIn = data?.data?.authenticated === true;
 
-    if (error) return <div className="justify-center items-center flex w-full h-screen font-semibold text-2xl">Error checking auth.</div>;
-    
     return (
         <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md">
            
@@ -137,28 +136,21 @@ export function Navbar() {
                     </NavigationMenu>
                 </div>
                 
-                {!userLoggedIn ? (
-                    <div className="hidden md:flex gap-4 items-center">
-                        <Link href="/signin" className="btn btn-secondary cursor-pointer">
-                            <Button>
-                                Sign in
-                            </Button>
+                <div className="hidden md:flex gap-4 items-center">
+                    {userLoggedIn ? (
+                        <Link href="/upload">
+                        <Button>
+                            Try free analysis
+                        </Button>
                         </Link>
-                        <Link href="/signup" className="btn btn-secondary cursor-pointer">
-                            <Button>
-                                Sign up
-                            </Button>
+                    ) : (
+                        <Link href="/signin">
+                        <Button variant="outline">
+                            Sign in
+                        </Button>
                         </Link>
-                    </div>
-                ) : (
-                    <div className="hidden md:flex gap-4 items-center">
-                            <Link href="/upload">
-                                <Button>
-                                    Try free analysis
-                                </Button>
-                        </Link>
-                    </div>
-                )}
+                    )}
+                </div>
 
                 <div className="md:hidden">
                     <Sheet>
@@ -211,13 +203,20 @@ function MobileNav() {
 
             <button onClick={() => scrollToSection("pricing")}>Pricing</button>
 
-            <div className="border-t pt-6 flex flex-col gap-3 text-center text-sm font-medium">
-                <Link href="/signin" className="btn2 btn-secondary cursor-pointer">
-                    Sign in
+            <div className="hidden md:flex gap-4 items-center">
+                {userLoggedIn ? (
+                <Link href="/upload">
+                    <Button>
+                        Try free analysis
+                    </Button>
                 </Link>
-                <Link href="/tryFree" className="btn-primary btn2 cursor-pointer ">
-                    Try free analysis
+                ) : (
+                <Link href="/signin">
+                    <Button variant="outline">
+                        Sign in
+                    </Button>
                 </Link>
+                )}
             </div>
          </nav>
     )

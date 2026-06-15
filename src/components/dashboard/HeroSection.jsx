@@ -1,7 +1,14 @@
+'use client'
 import GradientRing from "@/utils/GradientRings";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { useAuth } from "@/utils/hooks/useAuth";
 export default function HeroSection() {
+
+  const { data } = useAuth();
+
+  const userLoggedIn = data?.data?.authenticated === true;
+
   return (
     <section className="relative overflow-hidden px-6 py-20">
 
@@ -41,7 +48,7 @@ export default function HeroSection() {
 
         {/* CTAs */}
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link href="/upload">
+          <Link href={userLoggedIn ? "/upload" : "/signin"}>
             <Button size="lg">
               Analyze Contract
             </Button>

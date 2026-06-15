@@ -11,10 +11,13 @@ import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import {useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function SignUpForm() {
+  const queryClient = useQueryClient();
+  
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -60,7 +63,13 @@ export default function SignUpForm() {
       { withCredentials: true }
       );
       
-      toast.success("Signup successful! Check your email for the OTP to verify your account");
+      if (response.data.status === "Success") {
+        await queryClient.invalidateQueries({
+          queryKey: ["auth"],
+        });
+        toast.success("Signup successful! Check your email for the OTP to verify your account");
+        router.push("/");
+      }
 
       setForm({
         email: "",

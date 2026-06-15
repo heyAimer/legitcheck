@@ -8,10 +8,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import {useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function OtpVerify() {
+  const queryClient = useQueryClient();
+  
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -38,13 +41,17 @@ export default function OtpVerify() {
         {otp},
         {
           withCredentials: true,
-          headers: {
-          "Content-Type": "application/json",
-          }
         }
       );
-      toast.success(response.data.message || "OTP verified successfully!");
-      router.push("/");
+
+      if (response.data.status === "Success") {
+        await queryClient.invalidateQueries({
+          queryKey: ["auth"],
+        });
+        toast.success(response.data.message || "OTP verified successfully!");
+        router.push("/");
+      }
+
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const message =
