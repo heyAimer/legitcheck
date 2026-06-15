@@ -35,7 +35,6 @@ export default function UploadContractPage() {
       const res = await axios.post(`${BASE_URL}/scan`, formdata, {
         withCredentials: true,
       });
-      console.log("File uploaded successfully:", res);
 
       if (res.data.status === "Success") {
         toast.success(res.data.message);
@@ -52,7 +51,6 @@ export default function UploadContractPage() {
 
   const handleFileChange= (e) => {
     const file = e.target.files?.[0];
-    console.log(file)
     uploadContract(file);
   }
 

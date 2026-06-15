@@ -15,16 +15,13 @@ export default function AnalysisResultPage() {
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  console.log("analysis: ", analysis);
   const analyse = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/scan/analyse`,
         { withCredentials: true }
       );
-      console.log("Response : ", response);
       setAnalysis(response.data.data);
 
-      console.log("analysis: ", analysis);
     } catch (error) {
       console.error("Error analysing contract :", error);
     } finally {

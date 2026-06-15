@@ -56,7 +56,6 @@ const USE_CASE_ITEMS = [
 ]
 
 const scrollToSection = (id) => {
-    console.log("Auth status in scrollToSection:", data);
     const section = document.getElementById(id)
 
     if (section) {
@@ -73,10 +72,6 @@ export function Navbar() {
     const { data, isLoading, error } = useAuth();
 
     const userLoggedIn = data?.data?.authenticated;
-    
-    console.log("Auth status:", data?.data?.authenticated); // true
-    console.log("Auth loading:", isLoading); //false
-    console.log("Auth error:", error);
 
     if (error) return <div className="justify-center items-center flex w-full h-screen font-semibold text-2xl">Error checking auth.</div>;
     

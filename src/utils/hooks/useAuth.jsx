@@ -7,7 +7,6 @@ const checkAuth = async() => {
     const response = await axios.get(`${BASE_URL}/checkauth`,
         { withCredentials: true }
     );
-    console.log("Auth check response:", response);
     return response;
 }
 
