@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/utils/providers/QueryProvider";
 import AuthProvider from "@/utils/providers/AuthProvider";
+import { Navbar } from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -99,7 +101,9 @@ export default function RootLayout({ children }) {
       >
         <QueryProvider>
           <AuthProvider>
+            <Navbar/>
             {children}
+            <Footer/>
           </AuthProvider>
         </QueryProvider>
         <Toaster position="top-right"/>
