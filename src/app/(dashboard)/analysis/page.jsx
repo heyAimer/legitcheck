@@ -1,5 +1,6 @@
 "use client"
 
+import AskQuestion from "@/components/analysis/AskQues";
 import ClauseGroup from "@/components/analysis/ClauseGroup";
 import EmptyAnalysisState from "@/components/analysis/EmptyAnalysisState";
 import NegotiationSection from "@/components/analysis/NegotiationSection";
@@ -7,7 +8,6 @@ import RedFlagsSection from "@/components/analysis/RedFlagsSection";
 import RiskCategoryBreakdown from "@/components/analysis/RiskCategoryBreakdown";
 import RiskScoreHeader from "@/components/analysis/RiskScoreHeader";
 import ProtectedPage from "@/components/auth/ProtectedPage";
-import { useAuthContext } from "@/utils/providers/AuthProvider";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -17,9 +17,6 @@ import toast from "react-hot-toast";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function AnalysisResultPage() {
-
-  const router = useRouter();
-  const { data, isLoading, error } = useAuthContext();
 
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +39,7 @@ export default function AnalysisResultPage() {
     analyse();
   }, []);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-150px)] ">
         <Loader2 className="h-12 w-12 animate-spin" />
@@ -97,6 +94,11 @@ export default function AnalysisResultPage() {
             suggestions={analysis.negotiationSuggestions}
             isUnlocked={analysis.isUnlocked}
           />
+
+          <div className="bg-green-300">
+            <AskQuestion/>
+          </div>
+        
         </div>}
       </div>
     </ProtectedPage>
