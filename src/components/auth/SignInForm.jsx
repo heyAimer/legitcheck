@@ -58,8 +58,8 @@ export default function SignInForm() {
         await queryClient.invalidateQueries({
           queryKey: ["auth"],
         });
-        toast.success(response.data.message);
         router.push("/");
+        toast.success(response.data.message);
       }
       
       setForm({

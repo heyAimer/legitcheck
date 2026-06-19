@@ -14,7 +14,7 @@ const PRICING = [
                 "name": "Free",
                 "price": 0,
                 "billing_cycle": "one-time",
-                "tagline": "Try ContractKit before you commit",
+                "tagline": "Try LegitCheck before you commit",
                 "features": [
                     {
                     "icon": FileText,
@@ -121,7 +121,7 @@ const PRICING = [
             }
         ],
         "disclaimer": [
-            "ContractKit provides risk insights, not legal advice.",
+            "LegitCheck provides risk insights, not legal advice.",
             "Contracts are encrypted and never shared."
         ]
     }

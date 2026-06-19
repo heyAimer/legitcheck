@@ -3,10 +3,10 @@ import GradientRing from "@/utils/GradientRings"
 import { AlertCircle, ShieldCheck, Zap } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
-import { useAuth } from "@/utils/hooks/useAuth";
+import { useAuthContext } from "@/utils/providers/AuthProvider"
 
 const CTASection = () => {
-     const { data } = useAuth();
+     const { data } = useAuthContext();
 
     const userLoggedIn = data?.data?.authenticated === true;
     

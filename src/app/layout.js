@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/utils/providers/QueryProvider";
+import AuthProvider from "@/utils/providers/AuthProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -97,7 +98,9 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${mono.variable} font-sans antialiased`}
       >
         <QueryProvider>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </QueryProvider>
         <Toaster position="top-right"/>
       </body>

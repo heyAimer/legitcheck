@@ -67,8 +67,9 @@ export default function SignUpForm() {
         await queryClient.invalidateQueries({
           queryKey: ["auth"],
         });
-        toast.success("Signup successful! Check your email for the OTP to verify your account");
+
         router.push("/");
+        toast.success("Signup successful! Check your email for the OTP to verify your account");
       }
 
       setForm({

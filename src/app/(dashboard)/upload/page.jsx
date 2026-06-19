@@ -10,13 +10,13 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { jurisdictions } from "@/utils/CountryNames";
-import { useAuth } from "@/utils/hooks/useAuth";
+import { useAuthContext } from "@/utils/providers/AuthProvider";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function UploadContractPage() {
   const router = useRouter();
-  const { data, isLoading, error } = useAuth();
+  const { data, isLoading, error } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -270,7 +270,7 @@ export default function UploadContractPage() {
         </div>
 
         {/* SECTION 4: WHAT YOU’LL GET */}
-        <div className="space-y-4">
+        <div className="space-y-4 px-4">
           <h2 className="text-lg font-semibold">
             What you’ll get
           </h2>
@@ -283,7 +283,7 @@ export default function UploadContractPage() {
         </div>
 
         {/* SECTION 5: HOW IT WORKS */}
-        <div className="space-y-4">
+        <div className="space-y-4 px-4">
           <h2 className="text-lg font-semibold">
             How it works
           </h2>

@@ -50,7 +50,7 @@ export default function OutcomeSection() {
           Built for people who sign contracts, not lawyers
         </h2>
         <p className="md:mt-6 mt-2 max-w-2xl sm:text-lg text-sm leading-relaxed text-slate-500 text-muted-foreground mx-auto">
-          ContractKit helps freelancers and small teams spot risks early —
+          LegitCheck helps freelancers and small teams spot risks early —
           without legal jargon or expensive reviews.
         </p>
       </div>

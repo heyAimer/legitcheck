@@ -12,7 +12,7 @@ const steps = [
     {
       "step": 2,
       "title": "AI scans for risks",
-      "description": "ContractKit analyzes payment terms, IP ownership, termination clauses, and scope creep risks in seconds.",
+      "description": "LegitCheck analyzes payment terms, IP ownership, termination clauses, and scope creep risks in seconds.",
       "icon": ScanSearch
     },
     {

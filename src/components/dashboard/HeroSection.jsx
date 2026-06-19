@@ -2,15 +2,15 @@
 import GradientRing from "@/utils/GradientRings";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useAuth } from "@/utils/hooks/useAuth";
+import { useAuthContext } from "@/utils/providers/AuthProvider";
 export default function HeroSection() {
 
-  const { data } = useAuth();
+  const { data } = useAuthContext();
 
   const userLoggedIn = data?.data?.authenticated === true;
 
   return (
-    <section className="relative overflow-hidden px-6 py-20">
+    <section className="relative overflow-hidden px-6 py-20" id="hero">
 
       <GradientRing
         className="

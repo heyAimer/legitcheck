@@ -5,7 +5,7 @@ import NegotiationSection from "@/components/analysis/NegotiationSection";
 import RedFlagsSection from "@/components/analysis/RedFlagsSection";
 import RiskCategoryBreakdown from "@/components/analysis/RiskCategoryBreakdown";
 import RiskScoreHeader from "@/components/analysis/RiskScoreHeader";
-import { useAuth } from "@/utils/hooks/useAuth";
+import { useAuthContext } from "@/utils/providers/AuthProvider";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export default function AnalysisResultPage() {
 
   const router = useRouter();
-  const { data, isLoading, error } = useAuth();
+  const { data, isLoading, error } = useAuthContext();
 
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);

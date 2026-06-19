@@ -1,4 +1,85 @@
+'use client'
+import Image from "next/image";
+import Link from "next/link";
+
+const FOOTER_LINKS = [
+  {
+    title: "Product",
+    items: [
+      {
+        label: "How it works",
+        type: "section",
+        href: "how-it-works"
+      },
+      {
+        label: "Risk analysis",
+        type: "section",
+        href: "risk-analysis"
+      },
+      {
+        label: "Pricing",
+        type: "section",
+        href: "pricing"
+      }
+    ]
+  },
+
+  {
+    title:"Company",
+    items:[
+      {
+        label:"Contact",
+        type:"page",
+        href:"/contact"
+      },
+
+      {
+        label:"Privacy",
+        type:"page",
+        href:"/privacy"
+      },
+
+      {
+        label:"Terms",
+        type:"page",
+        href:"/terms"
+      }
+    ]
+  },
+
+  {
+    title:"Legal",
+    items:[
+      {
+        label:"Disclaimer",
+        type:"page",
+        href:"/disclaimer"
+      }
+    ]
+  }
+]
+
+const handleNavigate=(id)=>{
+  const section=document.getElementById(id);
+
+  if(section){
+    section.scrollIntoView({
+    behavior:'smooth'
+  })
+  return;
+  }
+
+  window.location.href=`/#${id}`;
+}
+
 export default function Footer() {
+  const handleLogoClick = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+    });
+  };
+  
   return (
     <footer className=" w-full relative ">
     {/* Radial Gradient Background from Bottom */}
@@ -16,9 +97,19 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">
-              ContractKit
-            </h3>
+            <div onClick={handleLogoClick} className="flex items-center gap-3 cursor-pointer"> 
+              <Image
+                src="/icon.png"
+                alt="LegitCheck Logo"
+                width={36}
+                height={36}
+                className="rounded-md h-auto w-auto"
+              />
+              <h3 className="text-lg font-semibold text-slate-900">
+                LegitCheck
+              </h3>
+            </div>
+      
             <p className="mt-3 text-sm text-slate-600 leading-relaxed">
               Fast, affordable contract risk analysis for freelancers and small agencies.
             </p>
@@ -27,58 +118,38 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-900">
-              Product
-            </h4>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li><a href="#how-it-works" className="text-slate-600 hover:text-blue-600">How it works</a></li>
-              <li><a href="#features" className="text-slate-600 hover:text-blue-600">Features</a></li>
-              <li><a href="#use-cases" className="text-slate-600 hover:text-blue-600">Use cases</a></li>
-              <li><a href="/pricing" className="text-slate-600 hover:text-blue-600">Pricing</a></li>
-              <li><a href="/sample-report" className="text-slate-600 hover:text-blue-600">Sample report</a></li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-900">
-              Resources
-            </h4>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li><a href="/templates" className="text-slate-600 hover:text-blue-600">Contract templates</a></li>
-              <li><a href="/blog" className="text-slate-600 hover:text-blue-600">Guides & blog</a></li>
-              <li><a href="/faq" className="text-slate-600 hover:text-blue-600">FAQ</a></li>
-              <li><a href="/support" className="text-slate-600 hover:text-blue-600">Support</a></li>
-              <li><a href="/contact" className="text-slate-600 hover:text-blue-600">Contact</a></li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="text-sm font-semibold text-slate-900">
-              Legal & Trust
-            </h4>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li><a href="/privacy" className="text-slate-600 hover:text-blue-600">Privacy policy</a></li>
-              <li><a href="/terms" className="text-slate-600 hover:text-blue-600">Terms of service</a></li>
-              <li><a href="/security" className="text-slate-600 hover:text-blue-600">Data security</a></li>
-              <li><a href="/disclaimer" className="text-slate-600 hover:text-blue-600">Legal disclaimer</a></li>
-            </ul>
-          </div>
-
+          {FOOTER_LINKS.map((group) => (
+            <div key={group.title} className="flex md:justify-center">
+              <div className="">
+                <h4 className="font-semibold text-lg">{group.title}</h4>
+                <ul className="mt-4 space-y-3">
+                  {group.items.map((item) => (
+                    <li key={item.label}>{item.type === "section" ?
+                      <button onClick={() => handleNavigate(item.href)} className="text-slate-600 hover:text-blue-600 cursor-pointer">
+                        {item.label}
+                      </button>
+                      :
+                      <Link
+                        href={item.href}ame="text-slate-600 hover:text-blue-600"
+                        >
+                        {item.label}
+                      </Link>
+                        }
+                    </li>))}
+                </ul>
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* Bottom Bar */}
+        
         <div className="mt-10 border-t border-slate-200 pt-6">
           <p className="text-xs text-slate-500 leading-relaxed">
-            <strong>Disclaimer:</strong> ContractKit provides automated contract risk insights for informational
+            <strong>Disclaimer:</strong> LegitCheck provides automated contract risk insights for informational
             purposes only and does not constitute legal advice. For legal decisions, consult a qualified lawyer.
           </p>
 
           <p className="mt-4 text-xs text-slate-500">
-            © {new Date().getFullYear()} ContractKit. All rights reserved.
+            © {new Date().getFullYear()} LegitCheck. All rights reserved.
           </p>
         </div>
       </div>
