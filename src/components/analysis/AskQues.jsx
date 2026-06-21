@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import ReactMarkdown from "react-markdown";
 
 import {
     MessageCircle,
@@ -37,13 +37,13 @@ export default function AskQuestion() {
 
     ]);
 
-    const askQuestion=async()=>{
+    const askQuestion = async () => {
 
         if(!question.trim()) return;
 
         const userQuestion = question;
 
-        setMessages(prev=>([
+        setMessages(prev => ([
             ...prev,
             {
                 role:"user",
@@ -69,7 +69,7 @@ export default function AskQuestion() {
             setMessages(prev=>([...prev,
                 {
                     role:"assistant",
-                    content:res.data.answer || "Sorry, I couldn't answer that."
+                    content:res.data.response || "Sorry, I couldn't answer that."
                 }
             ]));
 
@@ -121,9 +121,75 @@ export default function AskQuestion() {
 
                 <div className="h-[500px] overflow-y-auto p-5 space-y-4">
                     {messages.map((msg, index) => (
-                        <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                            <div className={`max-w-[80%] rounded-xl px-4 py-3 text-sm ${msg.role === "user" ? "bg-primary text-white" : "bg-secondary"}`}>
-                                {msg.content}
+                        <div
+                            key={index}
+                            className={`flex ${
+                                msg.role === "user"
+                                    ? "justify-end"
+                                    : "justify-start"
+                            }`}
+                        >
+                            <div
+                                className={`
+                                    max-w-[80%]
+                                    rounded-xl
+                                    px-4
+                                    py-3
+                                    text-sm
+                                    ${
+                                        msg.role === "user"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-muted border"
+                                    }
+                                `}
+                            >
+
+                                <ReactMarkdown
+                                    components={{
+                                        p: ({ children }) => (
+                                            <p className="mb-2 last:mb-0">
+                                                {children}
+                                            </p>
+                                        ),
+
+                                        ul: ({ children }) => (
+                                            <ul className="list-disc pl-5 space-y-1 my-2">
+                                                {children}
+                                            </ul>
+                                        ),
+
+                                        ol: ({ children }) => (
+                                            <ol className="list-decimal pl-5 space-y-1 my-2">
+                                                {children}
+                                            </ol>
+                                        ),
+
+                                        li: ({ children }) => (
+                                            <li>{children}</li>
+                                        ),
+
+                                        strong: ({ children }) => (
+                                            <strong className="font-semibold">
+                                                {children}
+                                            </strong>
+                                        ),
+
+                                        h1: ({ children }) => (
+                                            <h1 className="text-lg font-bold mb-2">
+                                                {children}
+                                            </h1>
+                                        ),
+
+                                        h2: ({ children }) => (
+                                            <h2 className="text-md font-semibold mb-2">
+                                                {children}
+                                            </h2>
+                                        )
+                                    }}
+                                >
+                                    {msg.content}
+                                </ReactMarkdown>
+
                             </div>
                         </div>
                     ))}
