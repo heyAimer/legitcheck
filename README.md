@@ -87,3 +87,6 @@ Risk categories
 Signup wall (triggered)
 ↓
 Trust strip
+
+
+so at the utmost right i'll put only avatar, that will have user's first word of the name , onclick dropdown will open and inside dropdown i;ll show, email name, contact, upload , logout

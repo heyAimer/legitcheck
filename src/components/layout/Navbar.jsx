@@ -71,7 +71,7 @@ const scrollToSection = (id) => {
 }
 
 export function Navbar() {
-    const { data,isLoading } = useAuthContext();
+    const { data } = useAuthContext();
     const [open, setOpen] = useState(false);
 
     const userLoggedIn = data?.data?.authenticated === true;
@@ -80,20 +80,22 @@ export function Navbar() {
         <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md">
            
             <div className="mx-auto px-6 py-6 md:py-2 flex justify-between items-center">
-                {isLoading && <Loader2 className=" w-14 h-14 rounded-md text-neutral-100 animate-spin mx-auto" />}
 
-                {!isLoading && <>
+                <>
                     <Link href='/' className="flex items-center gap-3 cursor-pointer"> 
                         <Image
-                        src="/icon.png"
-                        alt="LegitCheck Logo"
-                        width={12}
-                        height={12}
-                        className="rounded-md h-auto w-auto"
+                            src="/icon.png"
+                            alt="LegitCheck Logo"
+                            width={12}
+                            height={12}
+                            priority
+                            className="rounded-md h-auto w-auto"
                         />
+
                         <h3 className="text-lg font-semibold text-slate-900">
                         LegitCheck
                         </h3>
+                        
                     </Link>
                     
                     <div className="hidden md:flex">
@@ -183,7 +185,7 @@ export function Navbar() {
                             </SheetContent>
                         </Sheet>
                     </div>
-                </>}
+                </>
             </div>
         </header>
     )
