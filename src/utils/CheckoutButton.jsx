@@ -11,7 +11,7 @@ const CheckoutButton = ({plan}) => {
     const handleCheckout = async () => {
         try {
             setLoading(true);
-            const data = await createCheckoutSession(plan.plankey);
+            const data = await createCheckoutSession(plan.planKey);
 
             if (!data?.url) {
                 toast.error("Could not start checkout. Please try again.");
