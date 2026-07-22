@@ -2,11 +2,13 @@
 
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import CheckoutButton from "@/utils/CheckoutButton";
 
 export const pricingPlans = [
   {
     section: "§01",
     name: "1 Credit",
+    planKey: "one time",
     price: "$2",
     description: "For one contract you need to review before signing.",
     buttonText: "Buy 1 Credit",
@@ -21,6 +23,7 @@ export const pricingPlans = [
   {
     section: "§02",
     name: "5 Credits",
+    planKey: "super pack",
     price: "$5",
     description: "For freelancers and designers handling multiple clients.",
     buttonText: "Get 5 Credits",
@@ -37,6 +40,7 @@ export const pricingPlans = [
   {
     section: "§03",
     name: "15 Credits",
+    planKey: "mega pack",
     price: "$9",
     description:
       "For freelancers, studios, and small agencies reviewing contracts regularly.",
@@ -149,16 +153,7 @@ export default function PricingSection() {
               </ul>
 
               <div className="mt-auto">
-                <Button
-                  className={`w-full ${
-                    plan.highlighted
-                      ? "bg-blue-700 hover:bg-blue-800 text-white"
-                      : ""
-                  }`}
-                  variant={plan.highlighted ? "default" : "outline"}
-                >
-                  {plan.buttonText}
-                </Button>
+                <CheckoutButton plan = {plan}/>
               </div>
             </div>
           ))}
