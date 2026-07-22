@@ -9,7 +9,7 @@ export default function FullPageLoader() {
             <div className="flex flex-col items-center gap-5">
 
                 <Image
-                    src="/icon.png"
+                    src="/iconLogo.png"
                     alt="LegitCheck"
                     width={64}
                     height={64}

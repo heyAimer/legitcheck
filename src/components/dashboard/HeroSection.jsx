@@ -31,14 +31,13 @@ export default function HeroSection() {
       <div className="relative mx-auto max-w-7xl md:px-6 md:py-30 text-center" id="/hero">
         {/* Headline */}
         <h1 className="mx-auto max-w-3xl lg:text-5xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900">
-          Know the risks in your contract —
-          <span className="block text-blue-600 md:mt-2">before you sign.</span>
+          Don’t sign a contract you only
+          <span className="block text-blue-600 md:mt-2">half understand.</span>
         </h1>
 
         {/* Sub-headline */}
         <p className="mx-auto mt-6 max-w-2xl sm:text-lg text-sm leading-relaxed text-slate-500">
-          Upload a contract and get clear, plain-English risk highlights for
-          payment, IP, and scope in under a minute.
+          Upload your contract and get plain-English red flags for payment delays, ownership, scope creep, revisions, and cancellation — in under a minute.
         </p>
 
         {/* Trust line

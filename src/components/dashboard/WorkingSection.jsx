@@ -45,7 +45,7 @@ const WorkingSection = () => {
                 <h1 className="mx-auto max-w-3xl lg:text-5xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900">How LegitCheck works</h1>
                 <p className="mx-auto md:mt-6 mt-2 max-w-2xl sm:text-lg text-sm leading-relaxed text-slate-500">Upload a contract and get clear, actionable risk insights no legal jargon, no waiting.</p>
             </div>   
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:px-10 xl:px-26 md:px-10 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:px-10 xl:px-26 md:px-10 text-center mx-auto max-w-7xl md:px-6">
                 {steps.map((step) => (
                     <div className=" relative duration-200 px-4 py-8 rounded-lg flex flex-col gap-4 transition-all border border-3 border-gray-100 bg-white"
                     key={step.step}>

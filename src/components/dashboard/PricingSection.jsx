@@ -1,188 +1,171 @@
-'use client'
-import { AlertTriangle, BarChart3, DollarSign, Download, Edit3, FileEdit, FileText, Layers, Lock, Mail, MessageCircle, Minus, Share2, ShieldAlert, ShieldCheck, Zap } from "lucide-react"
-import { Button } from "../ui/button"
-const PRICING = [
-    {
-        "currency": {
-            "code": "USD",
-            "symbol": "$",
-            "billing_note": "Prices shown in USD. Taxes may apply."
-        },
-        "plans": [
-            {
-                "id": "free",
-                "name": "Free",
-                "price": 0,
-                "billing_cycle": "one-time",
-                "tagline": "Try LegitCheck before you commit",
-                "features": [
-                    {
-                    "icon": FileText,
-                    "label": "1 contract risk scan"
-                    },
-                    {
-                    "icon": AlertTriangle,
-                    "label": "Basic risk highlights"
-                    },
-                    {
-                    "icon": DollarSign,
-                    "label": "Payment & IP red flags"
-                    },
-                    {
-                    "icon": MessageCircle,
-                    "label": "Plain-English explanations"
-                    }
-                ],
-                "limitations": [
-                    "No suggested fixes",
-                    "No report export"
-                ],
-                "cta": {
-                    "label": "Run free scan",
-                    "variant": "outline"
-                },
-                "highlighted": false
-            },
-             {
-                "id": "starter_monthly",
-                "name": "Starter",
-                "price": 15,
-                "billing_cycle": "monthly",
-                "tagline": "For active freelancers & small agencies",
-                "badge": "Best value",
-                "features": [
-                    {
-                    "icon": Layers,
-                    "label": "Up to 10 contract scans per month"
-                    },
-                    {
-                    "icon": Zap,
-                    "label": "Priority analysis"
-                    },
-                    {
-                    "icon": ShieldCheck,
-                    "label": "Advanced risk explanations"
-                    },
-                    {
-                    "icon": FileEdit,
-                    "label": "Suggested clause fixes you can reuse"
-                    },
-                    {
-                    "icon": Share2,
-                    "label": "Export & share reports"
-                    },
-                    {
-                    "icon": Mail,
-                    "label": "Email support"
-                    }
-                ],
-                "limitations": [],
-                "cta": {
-                    "label": "Start monthly plan",
-                    "variant": "primary"
-                },
-                "highlighted": true
-            },
-            {
-                "id": "pay_as_you_go",
-                "name": "Pay as you go",
-                "price": 4,
-                "billing_cycle": "per scan",
-                "tagline": "Perfect for occasional contracts",
-                "badge": "Most flexible",
-                "features": [
-                    {
-                    "icon": ShieldAlert,
-                    "label": "Full contract risk analysis"
-                    },
-                    {
-                    "icon": Edit3,
-                    "label": "Suggested fixes & safer wording"
-                    },
-                    {
-                    "icon": BarChart3,
-                    "label": "Clear risk score (Low / Medium / High)"
-                    },
-                    {
-                    "icon":Download,
-                    "label": "Downloadable risk summary"
-                    },
-                    {
-                    "icon": Lock,
-                    "label": "Secure contract deletion"
-                    }
-                ],
-                "limitations": [],
-                "cta": {
-                    "label": "Analyze a contract",
-                    "variant": "primary"
-                },
-                "highlighted": false
-            }
-        ],
-        "disclaimer": [
-            "LegitCheck provides risk insights, not legal advice.",
-            "Contracts are encrypted and never shared."
-        ]
-    }
-]
-const PricingSection = () => {
-    return (
-        <section className="py-10 md:py-20 px-6 relative" id="pricing">
-            <div className=" mx-auto max-w-7xl md:px-6 md:mb-14 mb-7 text-center">
-                <h1 className="mx-auto max-w-3xl lg:text-5xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900">
-                    Simple, transparent pricing
-                </h1>
-                <p className="mx-auto md:mt-6 mt-2 max-w-2xl sm:text-lg text-sm leading-relaxed text-slate-500">Pay only for what you need — no long-term commitments.</p>
-            </div>
+"use client";
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:px-10 xl:px-26 md:px-24">
-                {PRICING[0].plans.map((price) => (
-                    <div key={price.id}  className=
-                        {`relative flex flex-col justify-between rounded-2xl
-                        border border-slate-200 bg-white p-6 transition-all duration-300
-                        ${price.highlighted ? "ring-2 ring-[#2563eb]  shadow-lg scale-[1.02] hover:shadow-lg " : " shadow-sm  hover:shadow-lg"}`}
-                    >
-                        <div>
-                            {price.highlighted && <span className="pricing-badge">Best value</span>}
+import { Check, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-                            <h1 className="text-lg font-semibold text-slate-900">{price.name}</h1>
+export const pricingPlans = [
+  {
+    section: "§01",
+    name: "1 Credit",
+    price: "$2",
+    description: "For one contract you need to review before signing.",
+    buttonText: "Buy 1 Credit",
+    highlighted: false,
+    features: [
+      "1 credit = 1 full contract scan",
+      "Full contract risk report",
+      "10 chat questions for this contract",
+      "Downloadable PDF report",
+    ],
+  },
+  {
+    section: "§02",
+    name: "5 Credits",
+    price: "$5",
+    description: "For freelancers and designers handling multiple clients.",
+    buttonText: "Get 5 Credits",
+    highlighted: true,
+    badge: "Popular",
+    badgeType:"popular",
+    features: [
+      "5 credits = 5 full contract scans",
+      "Full contract risk reports for each scan",
+      "10 chat questions per contract",
+      "Downloadable PDF reports",
+    ],
+  },
+  {
+    section: "§03",
+    name: "15 Credits",
+    price: "$9",
+    description:
+      "For freelancers, studios, and small agencies reviewing contracts regularly.",
+    buttonText: "Buy 15 Credits",
+    highlighted: true,
+    badge: "Best value",
+    badgeType:"value",
+    features: [
+      "15 credits = 15 full contract scans",
+      "Full contract risk report for each scan",
+      "15 chat questions per contract",
+      "Downloadable PDF reports",
+    ],
+  },
+];
 
-                            <h1 className="mt-4 text-4xl font-bold text-slate-900">
-                                ${price.price}
-                                <span className="billing-cycle">/{price.billing_cycle === 'monthly' ? 'mo' : price.billing_cycle}</span>
-                            </h1>
-                            <p className="mt-2 text-sm text-slate-600">{price.tagline}</p>
-                            <ul className="mt-6 space-y-3">
-                                {price.features.map((feature, index) => (
-                                    <li key={index} className="flex items-start text-sm text-slate-700">
-                                        <feature.icon size={16} className="mt-0.5 mr-3 text-[#2563eb] flex-shrink-0" />
-                                        {feature.label}
-                                    </li>
-                                ))}
-                            </ul>
-                            {price.limitations.length > 0 && (
-                                <ul className="limitations mt-4 text-sm text-slate-700">
-                                {price.limitations.map((lim, i) => (
-                                    <li key={i} className="flex items-center gap-2 mb-2">
-                                        <div className="rounded-full bg-slate-200 p-1">
-                                            <Minus size={14} className=" text-slate-700" />
-                                        </div>
-                                        {lim}
-                                    </li>
-                                ))}
-                                </ul>
-                            )}
-                        </div>
+const highlighterColors = {
+  popular: "#FDE68A", // warm yellow
+  value: "#A7F3D0",   // mint green, ties into the emerald check icons
+};
 
-                        <Button variant="" size="lg" className="mt-6">
-                            {price.cta.label}
-                        </Button>
-                    </div>
-                ))}
-            </div>
-        </section>
-    )
+function HighlighterMark({ type}) {
+  return (
+    <svg
+      viewBox="0 0 160 34"
+      className="absolute inset-0 h-full w-full"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4,20 C 30,6 60,28 90,10 C 115,-2 140,18 156,14 L156,30 C 120,26 90,32 60,26 C 35,21 15,30 4,28 Z"
+        fill={highlighterColors[type] || highlighterColors.popular}
+        opacity="0.9"
+      />
+    </svg>
+  );
 }
 
-export default PricingSection
+export default function PricingSection() {
+  return (
+    <section className=" relative py-20 px-4" id="pricing">
+
+      <div className="mx-auto max-w-7xl">
+
+        <div className="text-center max-w-2xl mx-auto mb-14 space-y-4">
+          <span className="text-xs font-semibold tracking-[0.2em] text-blue-700 uppercase">
+            Pricing
+          </span>
+
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900">
+            Simple pricing for safer contract decisions
+          </h2>
+          <p className="text-neutral-600 text-sm md:text-base leading-relaxed">
+            Pick a one-time scan for a single contract, or go Pro if you
+            review agreements regularly.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+          {pricingPlans.map((plan) => (
+            <div
+              key={plan.name}
+              className={`relative flex flex-col rounded-xl border bg-white p-6 transition-shadow ${
+                plan.highlighted
+                  ? "border-blue-600/30 ring-1 ring-blue-600/40 shadow-xl md:-translate-y-3"
+                  : "border-neutral-200 shadow-sm hover:shadow-md"
+              }`}
+            >
+              {plan.highlighted && plan.badge && (
+                <div className="absolute -top-4 -right-3 rotate-6">
+                  <div className="relative w-28 h-8 flex items-center justify-center px-2">
+                    <HighlighterMark type={plan.badgeType} />
+                    <span className="relative text-xs font-semibold text-neutral-800">
+                      {plan.badge}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-baseline gap-2 mb-1">
+                <h3 className="text-lg font-semibold text-neutral-900">
+                  {plan.name}
+                </h3>
+              </div>
+
+              <div className="flex items-baseline gap-1 mt-3 mb-3">
+                <span className="text-3xl font-semibold text-neutral-900">
+                  {plan.price}
+                </span>
+                {plan.interval && (
+                  <span className="text-sm text-neutral-400">
+                    {plan.interval}
+                  </span>
+                )}
+              </div>
+
+              <p className="text-sm text-neutral-500 leading-relaxed mb-6">
+                {plan.description}
+              </p>
+
+              <ul className="space-y-2.5 mb-6">
+                {plan.features.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                      <Check className="h-2.5 w-2.5 text-emerald-700" strokeWidth={3} />
+                    </span>
+                    <span className="text-sm text-neutral-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-auto">
+                <Button
+                  className={`w-full ${
+                    plan.highlighted
+                      ? "bg-blue-700 hover:bg-blue-800 text-white"
+                      : ""
+                  }`}
+                  variant={plan.highlighted ? "default" : "outline"}
+                >
+                  {plan.buttonText}
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+    </section>
+  );
+}

@@ -1,0 +1,426 @@
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+} from "@react-pdf/renderer";
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 32,
+    fontSize: 10,
+    fontFamily: "Helvetica",
+    color: "#111827",
+    lineHeight: 1.5,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 700,
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 9,
+    color: "#6B7280",
+    marginBottom: 18,
+  },
+  card: {
+    border: "1 solid #E5E7EB",
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 14,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: 700,
+    marginBottom: 10,
+    color: "#111827",
+  },
+  scoreRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 12,
+  },
+
+  scoreBox: {
+    width: 76,
+    minHeight: 56,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: "#F3F4F6",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  scoreNumber: {
+    fontSize: 26,
+    fontWeight: 700,
+    lineHeight: 1,
+    color: "#111827",
+  },
+
+  scoreTotal: {
+    fontSize: 10,
+    color: "#6B7280",
+    marginTop: 2,
+  },
+
+  summaryBox: {
+    flex: 1,
+    paddingTop: 2,
+  },
+
+  summaryText: {
+    fontSize: 10,
+    lineHeight: 1.6,
+    color: "#111827",
+  },
+  muted: {
+    color: "#6B7280",
+  },
+  item: {
+    marginBottom: 10,
+  },
+  label: {
+    fontWeight: 700,
+  },
+  riskHigh: {
+    color: "#DC2626",
+    fontWeight: 700,
+  },
+  riskMedium: {
+    color: "#D97706",
+    fontWeight: 700,
+  },
+  riskLow: {
+    color: "#059669",
+    fontWeight: 700,
+  },
+  divider: {
+    borderBottom: "1 solid #E5E7EB",
+    marginVertical: 8,
+  },
+  disclaimer: {
+    marginTop: 16,
+    padding: 10,
+    backgroundColor: "#F9FAFB",
+    borderRadius: 6,
+    fontSize: 9,
+    color: "#6B7280",
+  },
+});
+
+function RiskLevelText({ level }) {
+  const normalized = String(level || "").toUpperCase();
+
+  let style = styles.riskLow;
+  if (normalized === "HIGH" || normalized === "CRITICAL") {
+    style = styles.riskHigh;
+  } else if (normalized === "MEDIUM") {
+    style = styles.riskMedium;
+  }
+
+  return <Text style={style}>{normalized || "N/A"}</Text>;
+}
+
+function Section({ title, children }) {
+  return (
+    <View style={styles.card}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      {children}
+    </View>
+  );
+}
+
+function ClauseItem({ item }) {
+  return (
+    <View style={styles.item}>
+      {item.section && (
+        <Text>
+          <Text style={styles.label}>Section: </Text>
+          {item.section}
+        </Text>
+      )}
+
+      {item.category && (
+        <Text>
+          <Text style={styles.label}>Category: </Text>
+          {item.category}
+        </Text>
+      )}
+
+      {item.riskLevel && (
+        <Text>
+          <Text style={styles.label}>Risk Level: </Text>
+          <RiskLevelText level={item.riskLevel} />
+        </Text>
+      )}
+
+      {item.clause && (
+        <Text>
+          <Text style={styles.label}>Clause: </Text>
+          {item.clause}
+        </Text>
+      )}
+
+      {item.explanation && (
+        <Text>
+          <Text style={styles.label}>Explanation: </Text>
+          {item.explanation}
+        </Text>
+      )}
+
+      {item.risk && (
+        <Text>
+          <Text style={styles.label}>Risk: </Text>
+          {item.risk}
+        </Text>
+      )}
+
+      {item.whyItMatters && (
+        <Text>
+          <Text style={styles.label}>Why it matters: </Text>
+          {item.whyItMatters}
+        </Text>
+      )}
+
+      {item.whatToAsk && (
+        <Text>
+          <Text style={styles.label}>What to ask: </Text>
+          {item.whatToAsk}
+        </Text>
+      )}
+
+      {item.suggestedWording && (
+        <Text>
+          <Text style={styles.label}>Suggested wording: </Text>
+          {item.suggestedWording}
+        </Text>
+      )}
+
+      <View style={styles.divider} />
+    </View>
+  );
+}
+
+const safeText = (value, fallback = "Not available") => {
+  if (value === null || value === undefined) return fallback;
+
+  if (typeof value === "string") return value;
+  if (typeof value === "number") return String(value);
+  if (typeof value === "boolean") return value ? "Yes" : "No";
+
+  if (Array.isArray(value)) {
+    return value.map((item) => safeText(item, "")).join(", ");
+  }
+
+  if (typeof value === "object") {
+    return JSON.stringify(value);
+  }
+
+  return String(value);
+};
+
+export default function AnalysisPDFDocument({ analysis }) {
+  const riskCategories = analysis?.riskCategories || [];
+  const redFlags = analysis?.redFlags || [];
+  const missingProtections = analysis?.missingProtections || [];
+  const whatCanGoWrong = analysis?.whatCanGoWrong || [];
+  const harmfulClauses = analysis?.harmfulClauses || [];
+  const safeClauses = analysis?.safeClauses || [];
+  const negotiationSuggestions = analysis?.negotiationSuggestions || [];
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.title}>LegitCheck Contract Risk Report</Text>
+        <Text style={styles.subtitle}>
+          Generated by LegitCheck. This report helps identify practical contract risks before signing.
+        </Text>
+
+        <Section title="Overall Risk Summary">
+          <View style={styles.scoreRow}>
+            <View style={styles.scoreBox}>
+              <Text style={styles.scoreNumber}>
+                {analysis?.overallRiskScore ?? 0}
+              </Text>
+              <Text style={styles.scoreTotal}>/100</Text>
+            </View>
+
+            <View style={styles.summaryBox}>
+              <Text style={styles.summaryText}>
+                {analysis?.summary || "No summary available."}
+              </Text>
+            </View>
+          </View>
+        </Section>
+
+        {riskCategories.length > 0 && (
+          <Section title="Risk Category Breakdown">
+            {riskCategories.map((category, index) => (
+              <View key={index} style={styles.item}>
+                <Text>
+                  <Text style={styles.label}>{category.key || category.category}: </Text>
+                  <RiskLevelText level={category.level || category.riskLevel} />
+                </Text>
+              </View>
+            ))}
+          </Section>
+        )}
+
+        {redFlags.length > 0 && (
+          <Section title="Top Red Flags">
+            {redFlags.map((item, index) => (
+              <ClauseItem key={item.id || index} item={item} />
+            ))}
+          </Section>
+        )}
+
+        {missingProtections.length > 0 && (
+          <Section title="Missing Protections">
+            {missingProtections.map((item, index) => (
+              <View key={item.id || index} style={styles.item}>
+                <Text>
+                  <Text style={styles.label}>Missing: </Text>
+                  {item.title || item.item || item.protection || "Protection missing"}
+                </Text>
+
+                {item.whyItMatters && (
+                  <Text>
+                    <Text style={styles.label}>Why it matters: </Text>
+                    {item.whyItMatters}
+                  </Text>
+                )}
+
+                {item.recommendation && (
+                  <Text>
+                    <Text style={styles.label}>Recommendation: </Text>
+                    {item.recommendation}
+                  </Text>
+                )}
+
+                <View style={styles.divider} />
+              </View>
+            ))}
+          </Section>
+        )}
+
+        {whatCanGoWrong.length > 0 && (
+          <Section title="What Can Go Wrong">
+            {whatCanGoWrong.length > 0 && (
+              <Section title="What Can Go Wrong">
+                {whatCanGoWrong.map((item, index) => {
+                  const scenario =
+                    item?.scenario ||
+                    item?.title ||
+                    item?.risk ||
+                    item?.consequence ||
+                    "Possible issue";
+
+                  return (
+                    <View key={item?.id || index} style={styles.item}>
+                      <Text>
+                        <Text style={styles.label}>Scenario: </Text>
+                        {String(scenario)}
+                      </Text>
+
+                      {item?.consequence && (
+                        <Text>
+                          <Text style={styles.label}>Consequence: </Text>
+                          {String(item.consequence)}
+                        </Text>
+                      )}
+
+                      {item?.impact && (
+                        <Text>
+                          <Text style={styles.label}>Impact: </Text>
+                          {String(item.impact)}
+                        </Text>
+                      )}
+
+                      {item?.howToAvoid && (
+                        <Text>
+                          <Text style={styles.label}>How to avoid: </Text>
+                          {String(item.howToAvoid)}
+                        </Text>
+                      )}
+
+                      {item?.whatToAsk && (
+                        <Text>
+                          <Text style={styles.label}>What to ask: </Text>
+                          {String(item.whatToAsk)}
+                        </Text>
+                      )}
+
+                      <View style={styles.divider} />
+                    </View>
+                  );
+                })}
+              </Section>
+            )}
+          </Section>
+        )}
+
+        {harmfulClauses.length > 0 && (
+          <Section title="Risky Clauses">
+            {harmfulClauses.map((item, index) => (
+              <ClauseItem key={item.id || index} item={item} />
+            ))}
+          </Section>
+        )}
+
+        {safeClauses.length > 0 && (
+          <Section title="Protective Clauses">
+            {safeClauses.map((item, index) => (
+              <ClauseItem key={item.id || index} item={item} />
+            ))}
+          </Section>
+        )}
+
+        {negotiationSuggestions.length > 0 && (
+          <Section title="Negotiation Suggestions">
+            {negotiationSuggestions.map((item, index) => (
+              <View key={index} style={styles.item}>
+                {item.section && (
+                  <Text>
+                    <Text style={styles.label}>Section: </Text>
+                    {item.section}
+                  </Text>
+                )}
+
+                {item.clause && (
+                  <Text>
+                    <Text style={styles.label}>Clause: </Text>
+                    {item.clause}
+                  </Text>
+                )}
+
+                <Text>
+                  <Text style={styles.label}>Suggestion: </Text>
+                  {item.suggestion || item.whatToAsk || "No suggestion available."}
+                </Text>
+
+                {item.suggestedWording && (
+                  <Text>
+                    <Text style={styles.label}>Suggested wording: </Text>
+                    {item.suggestedWording}
+                  </Text>
+                )}
+
+                <View style={styles.divider} />
+              </View>
+            ))}
+          </Section>
+        )}
+
+        <View style={styles.disclaimer}>
+          <Text>
+            Disclaimer: LegitCheck does not provide legal advice and does not replace a lawyer.
+            This report is generated to help you identify potential risks, ask better questions,
+            and prepare for negotiation before signing.
+          </Text>
+        </View>
+      </Page>
+    </Document>
+  );
+}

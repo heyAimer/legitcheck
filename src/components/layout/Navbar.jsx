@@ -84,10 +84,10 @@ export function Navbar() {
                 <>
                     <Link href='/' className="flex items-center gap-3 cursor-pointer"> 
                         <Image
-                            src="/icon.png"
+                            src="/iconLogo.png"
                             alt="LegitCheck Logo"
-                            width={12}
-                            height={12}
+                            width={28}
+                            height={28}
                             priority
                             className="rounded-md h-auto w-auto"
                         />

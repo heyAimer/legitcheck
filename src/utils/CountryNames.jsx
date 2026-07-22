@@ -1,5 +1,4 @@
 export const jurisdictions = [
-  { label: "🇮🇳 India", value: "india" },
   { label: "🇺🇸 United States", value: "united_states" },
   { label: "🇬🇧 United Kingdom", value: "united_kingdom" },
   { label: "🇨🇦 Canada", value: "canada" },
@@ -14,6 +13,7 @@ export const jurisdictions = [
   { label: "🇧🇪 Belgium", value: "belgium" },
   { label: "🇨🇭 Switzerland", value: "switzerland" },
   { label: "🇦🇹 Austria", value: "austria" },
+  { label: "🇮🇳 India", value: "india" },
   { label: "🇮🇪 Ireland", value: "ireland" },
   { label: "🇵🇹 Portugal", value: "portugal" },
   { label: "🇸🇪 Sweden", value: "sweden" },

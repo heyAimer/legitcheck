@@ -43,9 +43,9 @@ const USE_CASE_ITEMS = [
 
 export default function OutcomeSection() {
   return (
-    <section id="use-cases" className="px-6 md:py-24 py-10 relative">
+    <section id="use-cases" className="px-6 md:py-24 py-10 relative mx-auto max-w-7xl ">
      
-      <div className="mx-auto max-w-7xl md:mb-14 mb-7 text-center">
+      <div className="md:mb-14 mb-7 text-center">
         <h2 className="max-w-3xl md:text-4xl sm:text-3xl text-xl font-semibold tracking-tight text-slate-900 mx-auto">
           Built for people who sign contracts, not lawyers
         </h2>

@@ -1,7 +1,19 @@
 // src/components/analysis/ClauseGroup.jsx
 
-import { Star } from "lucide-react";
+import { AlertTriangle, ShieldCheck, Lock, Lightbulb } from "lucide-react";
 import { Badge } from "../ui/badge";
+
+const riskAccent = {
+  HIGH: "border-l-red-500",
+  MEDIUM: "border-l-amber-500",
+  LOW: "border-l-green-500",
+};
+
+const riskBadge = {
+  HIGH: "bg-red-100 text-red-700 border-red-200",
+  MEDIUM: "bg-amber-100 text-amber-700 border-amber-200",
+  LOW: "bg-green-100 text-green-700 border-green-200",
+};
 
 export default function ClauseGroup({
   title,
@@ -9,46 +21,63 @@ export default function ClauseGroup({
   isUnlocked,
   lockedText
 }) {
+  const isHarmful = title?.toLowerCase().includes("harmful");
+  const HeaderIcon = isHarmful ? AlertTriangle : ShieldCheck;
+  
   return (
-    <div className="border rounded-lg p-6">
-      <h2 className="text-xl font-semibold mb-2">{title}</h2>
-
-      <p className="text-sm text-gray-500 mb-4">
-        {clauses.length} clauses found !
-      </p>
+    <div className="border rounded-lg p-6 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <HeaderIcon
+            className={`h-5 w-5 ${isHarmful ? "text-red-600" : "text-green-600"}`}
+          />
+          <h2 className="text-lg font-semibold">{title}</h2>
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {clauses.length} found
+        </span>
+      </div>
 
       {isUnlocked ? (
-        clauses.map((c) => (
-          <div key={c.id} className="mb-3 space-y-4 border border-border p-4 rounded-md shadow-md shadow-neutral-300/30">
-            <h1 className="font-semibold">At Section : {c.section}</h1>
-            <p className="">{c.clause}.</p>
-            
-            <div className="flex gap-2 items-center">
-              <Star className="h-4 w-4 animate-spin text-yellow-600" />
-              <p className="text-sm text-yellow-800">
-                {c.explanation}
-              </p>
-            </div>
+        <div className="space-y-3">
+          {clauses.map((c, idx) => {
+            const level = c.riskLevel?.toUpperCase();
+            const accent = riskAccent[level] || "border-l-muted";
+            const badge = riskBadge[level] || "bg-muted text-muted-foreground border-border";
 
-            <div className="flex justify-end">
-              <Badge
-                className={
-                  c.riskLevel === "HIGH"
-                    ? "bg-red-200/10 text-red-600 border-red-500/20"
-                    : c.riskLevel === "MEDIUM"
-                    ? "bg-yellow-200/10 text-yellow-600 border-yellow-500/20"
-                    : "bg-green-200/10 text-green-600 border-green-500/20"
-                }
+            return (
+              <div
+                key={c.id ?? idx}
+                className={`space-y-3 border border-l-4 ${accent} p-4 rounded-md`}
               >
-                Risk Level : {c.riskLevel}
-              </Badge>
-            </div>
-          </div>
-        ))
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Section: {c.section}
+                  </p>
+                  <Badge className={`text-[10px] uppercase tracking-wide shrink-0 ${badge}`}>
+                    {c.riskLevel}
+                  </Badge>
+                </div>
+
+                <p className="text-sm">{c.clause}</p>
+
+                <div className="flex gap-2 items-start bg-muted/40 rounded-md p-3">
+                  <Lightbulb className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted-foreground">
+                    {c.explanation}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
-        <p className="text-sm text-gray-400">
-          {lockedText}
-        </p>
+        <div className="flex flex-col items-center justify-center text-center gap-2 py-8 border border-dashed rounded-md">
+          <Lock className="h-6 w-6 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground max-w-[220px]">
+            {lockedText}
+          </p>
+        </div>
       )}
     </div>
   );

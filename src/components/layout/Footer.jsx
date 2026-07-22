@@ -99,7 +99,7 @@ export default function Footer() {
           <div>
             <div onClick={handleLogoClick} className="flex items-center gap-3 cursor-pointer"> 
               <Image
-                src="/icon.png"
+                src="/iconLogo.png"
                 alt="LegitCheck Logo"
                 width={36}
                 height={36}

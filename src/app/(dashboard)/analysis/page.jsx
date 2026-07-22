@@ -2,11 +2,14 @@
 
 import AskQuestion from "@/components/analysis/AskQues";
 import ClauseGroup from "@/components/analysis/ClauseGroup";
+import DownloadAnalysisPDF from "@/components/analysis/DownloadAnalysisPDF";
 import EmptyAnalysisState from "@/components/analysis/EmptyAnalysisState";
+import MissingProtectionSection from "@/components/analysis/MissingProtectionSection";
 import NegotiationSection from "@/components/analysis/NegotiationSection";
 import RedFlagsSection from "@/components/analysis/RedFlagsSection";
 import RiskCategoryBreakdown from "@/components/analysis/RiskCategoryBreakdown";
 import RiskScoreHeader from "@/components/analysis/RiskScoreHeader";
+import WhatCanGoWrongSection from "@/components/analysis/WhatCanGoWrongSection";
 import ProtectedPage from "@/components/auth/ProtectedPage";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
@@ -27,6 +30,7 @@ export default function AnalysisResultPage() {
         { withCredentials: true }
       );
       setAnalysis(response.data.data);
+      console.log("Analysis data:", response);
 
     } catch (error) {
       toast.error("Failed to analyse contract");
@@ -65,12 +69,25 @@ export default function AnalysisResultPage() {
             summary={analysis.summary}
           />
 
+          <div className="flex justify-end">
+            <DownloadAnalysisPDF analysis={analysis}/>
+          </div>
           {/* Risk Breakdown */}
           <RiskCategoryBreakdown categories={analysis.riskCategories} />
 
           {/* Red Flags */}
           <RedFlagsSection
             redFlags={analysis.redFlags}
+            isUnlocked={analysis.isUnlocked}
+          />
+
+          <MissingProtectionSection
+            protections={analysis.missingProtections}
+            isUnlocked={analysis.isUnlocked}
+          />
+
+          <WhatCanGoWrongSection
+            scenarios={analysis.whatCanGoWrong}
             isUnlocked={analysis.isUnlocked}
           />
 
@@ -94,11 +111,7 @@ export default function AnalysisResultPage() {
             suggestions={analysis.negotiationSuggestions}
             isUnlocked={analysis.isUnlocked}
           />
-
-          <div className="bg-green-300">
             <AskQuestion/>
-          </div>
-        
         </div>}
       </div>
     </ProtectedPage>

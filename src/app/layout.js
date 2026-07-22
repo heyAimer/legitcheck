@@ -48,19 +48,26 @@ export const metadata = {
   publisher: "Rising Devs",
   
   robots:{
+    index:true,
+    follow:true,
+    googleBot:{
       index:true,
-      follow:true,
-      googleBot:{
-          index:true,
-          follow:true
-      }
+      follow:true
+    }
   },
 
-  icons:{
-    icon:"/icon.png",
-    shortcut:"/icon.png",
-    apple:"/icon100.png",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple.png", sizes: "180x180", type: "image/png" },
+    ],
   },
+  manifest: "/site.webmanifest",
 
   openGraph:{
     title:
