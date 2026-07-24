@@ -24,10 +24,9 @@ export default function AnalysisResultPage() {
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expired, setExpired] = useState(false);
+  const [chatsLeft, setChatsLeft] = useState(null);
 
-  const expiresAt =
-  analysis?.expiresAt ??
-  (analysis?.createdAt
+  const expiresAt = analysis?.expiresAt ?? (analysis?.createdAt
     ? new Date(new Date(analysis.createdAt).getTime() + 20 * 60 * 1000).toISOString()
     : null);
   
@@ -37,7 +36,9 @@ export default function AnalysisResultPage() {
         { withCredentials: true }
       );
       setAnalysis(response.data.data);
-
+      if (typeof response.data.chatsLeft === 'number') {
+        setChatsLeft(response.data.chatsLeft);
+      }
     } catch (error) {
       toast.error("Failed to analyse contract");
     } finally {
@@ -134,7 +135,7 @@ export default function AnalysisResultPage() {
             suggestions={analysis.negotiationSuggestions}
             isUnlocked={analysis.isUnlocked}
           />
-            <AskQuestion/>
+          <AskQuestion chatsLeft={chatsLeft} setChatsLeft={setChatsLeft}/>
         </div>}
       </div>
     </ProtectedPage>

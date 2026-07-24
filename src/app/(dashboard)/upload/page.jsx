@@ -230,7 +230,7 @@ export default function UploadContractPage() {
 
                 <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
                   <MessageCircle className="h-5 w-5 text-blue-600" />
-                  {entitlement.subscription.questionsLeft} question{entitlement.subscription.questionsLeft === 1 ? "" : "s"} left per scan
+                  {entitlement.subscription.questionsLeft} question{entitlement.subscription.questionsLeft === 1 ? "" : "s"} left
                 </span>
               </>
             )}

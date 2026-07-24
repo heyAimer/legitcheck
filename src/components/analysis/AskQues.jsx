@@ -23,24 +23,21 @@ import {
 } from "lucide-react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const FREE_TRIAL_CHAT_LIMIT = 3;
 
-export default function AskQuestion() {
+export default function AskQuestion({chatsLeft, setChatsLeft}) {
 
     const [open,setOpen]=useState(false);
     const [question,setQuestion]=useState("");
     const [loading, setLoading] = useState(false);
-    const [chatsLeft, setChatsLeft] = useState(null);
     
-    const [messages,setMessages]=useState([
+    const [messages, setMessages] = useState([
         {
-            role:"assistant",
+            role: "assistant",
             content: "Hi 👋 I'm LegitCheck AI. Ask me anything about this contract."
         }
-
     ]);
 
-    const noChatsLeft = chatsLeft !== null && chatsLeft <= 0;
+    const noChatsLeft = typeof chatsLeft === "number" && chatsLeft <= 0;
 
     const askQuestion = async () => {
 
@@ -77,7 +74,7 @@ export default function AskQuestion() {
                 }
             ]));
 
-            if (typeof res.data.chatsLeft === "number") {
+            if (typeof res.data.chatsLeft === "number" && setChatsLeft) {
                 setChatsLeft(res.data.chatsLeft);
             }
 
@@ -126,21 +123,39 @@ export default function AskQuestion() {
                         Ask LegitCheck
                     </DialogTitle>
 
-                    {chatsLeft !== null && (
-                        <span
-                            className={`text-xs font-medium rounded-full px-2.5 py-1 ${
+                   {typeof chatsLeft === "number" && (
+                        <div className="mt-2 flex items-center justify-between gap-3 rounded-xl border bg-muted/40 px-3 py-2">
+                            <div className="flex items-center gap-2">
+                            <span
+                                className={`h-2 w-2 rounded-full ${
                                 noChatsLeft
-                                    ? "bg-red-100 text-red-700"
+                                    ? "bg-red-500"
                                     : chatsLeft <= 2
-                                    ? "bg-amber-100 text-amber-700"
-                                    : "bg-neutral-100 text-neutral-600"
+                                    ? "bg-amber-500"
+                                    : "bg-emerald-500"
+                                }`}
+                            />
+
+                            <span className="text-xs font-medium text-muted-foreground">
+                                Chat questions
+                            </span>
+                            </div>
+
+                            <span
+                            className={`text-xs font-semibold ${
+                                noChatsLeft
+                                ? "text-red-700"
+                                : chatsLeft <= 2
+                                ? "text-amber-700"
+                                : "text-emerald-700"
                             }`}
-                        >
+                            >
                             {noChatsLeft
-                                ? "No questions left"
-                                : `${chatsLeft} question${chatsLeft === 1 ? "" : "s"} left`}
-                        </span>
-                    )}
+                                ? "None left"
+                                : `${chatsLeft} left`}
+                            </span>
+                        </div>
+                        )}
                 </DialogHeader>
 
                 <div className="h-[500px] overflow-y-auto p-5 space-y-4">
@@ -265,8 +280,10 @@ export default function AskQuestion() {
                                 e.target.value
                             )
                         }
-                        disabled={loading}
-                        placeholder="Ask about this contract..."
+                        disabled={loading || noChatsLeft}
+                        placeholder={
+                            noChatsLeft ? "No questions left for this contract" : "Ask about this contract..."
+                        }
                         onKeyDown={(e) => {
                             if (
                                 e.key === "Enter"
