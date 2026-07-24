@@ -1,5 +1,6 @@
 "use client"
 
+import AnalysisCountdown from "@/components/analysis/AnalysisCountdown";
 import AskQuestion from "@/components/analysis/AskQues";
 import ClauseGroup from "@/components/analysis/ClauseGroup";
 import DownloadAnalysisPDF from "@/components/analysis/DownloadAnalysisPDF";
@@ -13,7 +14,6 @@ import WhatCanGoWrongSection from "@/components/analysis/WhatCanGoWrongSection";
 import ProtectedPage from "@/components/auth/ProtectedPage";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -23,6 +23,13 @@ export default function AnalysisResultPage() {
 
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [expired, setExpired] = useState(false);
+
+  const expiresAt =
+  analysis?.expiresAt ??
+  (analysis?.createdAt
+    ? new Date(new Date(analysis.createdAt).getTime() + 20 * 60 * 1000).toISOString()
+    : null);
   
   const analyse = async () => {
     try {
@@ -30,7 +37,6 @@ export default function AnalysisResultPage() {
         { withCredentials: true }
       );
       setAnalysis(response.data.data);
-      console.log("Analysis data:", response);
 
     } catch (error) {
       toast.error("Failed to analyse contract");
@@ -63,7 +69,24 @@ export default function AnalysisResultPage() {
     <ProtectedPage>
       <div>
         {analysis && <div className="max-w-5xl mx-auto px-6 py-8 space-y-8">
-          {/* Header */}
+          {expiresAt && (
+          <AnalysisCountdown
+            expiresAt={expiresAt}
+            onExpire={() => setExpired(true)}
+          />
+          )}
+          
+          {expired && (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-center">
+              <p className="text-sm font-medium text-red-700">
+                This analysis has expired and is no longer available.
+              </p>
+              <p className="text-xs text-red-600 mt-1">
+                Upload a new contract to get a fresh report.
+              </p>
+            </div>
+          )}
+          
           <RiskScoreHeader
             score={analysis.overallRiskScore}
             summary={analysis.summary}

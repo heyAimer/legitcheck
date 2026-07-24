@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, ShieldCheck, Scale, Brain, X, Loader2, WifiOff } from "lucide-react";
+import { Upload, ShieldCheck, Scale, Brain, X, Loader2, WifiOff, FileSearch, MessageCircle, Crown, Sparkles } from "lucide-react";
 
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -12,8 +12,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { jurisdictions } from "@/utils/CountryNames";
 import { useAuthContext } from "@/utils/providers/AuthProvider";
 import ProtectedPage from "@/components/auth/ProtectedPage";
+import getEntitlement from "@/utils/Entitlement";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 const roles = [
   { value: "designer", label: "Designer / Creative Freelancer" },
   { value: "freelancer", label: "Freelancer / Consultant" },
@@ -37,6 +39,11 @@ export default function UploadContractPage() {
 
   const [reviewerRole, setReviewerRole] = useState("designer");
   const [jurisdiction, setJuristiction] = useState("united_states");
+
+  const [entitlement, setEntitlement] = useState(null);
+
+  const scansRemaining = entitlement?.subscription?.scans ?? 0;
+  const canAnalyze = scansRemaining > 0;
 
   const uploadFile = useRef(null);
   const abortControllerRef = useRef(null);
@@ -93,8 +100,6 @@ export default function UploadContractPage() {
 
     const formdata = new FormData();
     formdata.append("file", selectFile);
-    // formdata.append("location", jurisdiction);
-    // formdata.append("user_role", reviewerRole);
 
     const params = new URLSearchParams({
       location: jurisdiction,
@@ -115,6 +120,13 @@ export default function UploadContractPage() {
       if (axios.isCancel(error) || error.code === "ERR_CANCELED") {
         return;
       }
+
+      if (error.response?.status === 402) {
+        toast.error(error.response.data?.message || "You're out of scans. Please buy more to continue.");
+        router.push("/#pricing");
+        return;
+      }
+      
       console.error("Error uploading file:", error);
       toast.error("Something went wrong while analyzing your contract. Please try again.");
       setSelectFile(null);
@@ -141,7 +153,15 @@ export default function UploadContractPage() {
     if (uploadFile.current) uploadFile.current.value = "";
     uploadFile.current.click();
   }
-  
+
+  useEffect(() => {
+    if (!isLoading && data?.data?.authenticated) {
+      getEntitlement()
+        .then(setEntitlement)
+        .catch(() => setEntitlement({subscription: { scans: 0, subscriptionName: null }}));
+    }
+  }, [isLoading, data]);
+
   // Abort any pending request if the user navigates away mid-upload
   useEffect(() => {
     return () => {
@@ -171,19 +191,49 @@ export default function UploadContractPage() {
       </div>
     );
   }
+
   return (
     <ProtectedPage>
       <div className="min-h-screen bg-background px-4 py-12">
-        <div className="mx-auto max-w-3xl space-y-12">
+        <div className="mx-auto max-w-3xl space-y-16">
 
           {/* SECTION 1: PAGE HEADER */}
-          <div className="text-center space-y-3">
+          <div className="text-center space-y-3 mb-16">
             <h1 className="text-3xl font-semibold tracking-tight">
               Don’t sign a contract you only half understand.
             </h1>
             <p className="text-muted-foreground text-sm md:text-base">
               Upload your contract and get clear red flags, risk score, plain-English explanations, and negotiation questions before you sign.
             </p>
+          </div>
+
+          <div className="flex items-center gap-2 justify-end mb-4">
+            {entitlement && (
+              <>
+                {entitlement?.subscription?.subscriptionName === "free trial" ? (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium 
+                  text-blue-700 bg-blue-50 rounded-sm px-4 py-2 border border-blue-200">
+                    <Sparkles className="h-5 w-5" />
+                    {entitlement.subscription?.subscriptionName}
+                  </span>
+                ) : (
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-yellow-600 bg-yellow-50 rounded-sm px-4 py-2 border border-yellow-400">
+                      <Crown className="h-5 w-5" />
+                      {entitlement.subscription.subscriptionName}
+                    </span>
+                )}
+
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
+                  <FileSearch className="h-5 w-5 text-yellow-600" />
+                  {entitlement.subscription.scans} scan{entitlement.subscription.scans === 1 ? "" : "s"} left
+                </span>
+
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
+                  <MessageCircle className="h-5 w-5 text-blue-600" />
+                  {entitlement.subscription.questionsLeft} question{entitlement.subscription.questionsLeft === 1 ? "" : "s"} left per scan
+                </span>
+              </>
+            )}
           </div>
 
           {/* SECTION 2: UPLOAD CARD */}
@@ -339,21 +389,33 @@ export default function UploadContractPage() {
                 </div>
               </div>
 
-              <Button
-                onClick={handleAnalyze}
-                disabled={!selectFile || loading}
-                className="w-full max-w-xs"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Analyzing...
-                  </>
-                ) : (
-                  "Analyze Contract"
-                )}
-              </Button>
-
+              {entitlement && !canAnalyze ? (
+                <div className="w-full max-w-xs text-center space-y-2 border border-dashed rounded-lg p-4">
+                  <p className="text-sm font-medium">You've used your free scan</p>
+                  <p className="text-xs text-muted-foreground">
+                    Buy credits to analyze more contracts.
+                  </p>
+                  <Button onClick={() => router.push("/#pricing")} className="w-full">
+                    View Pricing
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={handleAnalyze}
+                  disabled={!selectFile || loading || !entitlement}
+                  className="w-full max-w-xs"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Analyzing...
+                    </>
+                  ) : (
+                    "Analyze Contract"
+                  )}
+                </Button>
+              )}
+              
               <div className="text-xs text-muted-foreground text-center">
                 <p>
                   Files are processed securely and deleted after analysis.

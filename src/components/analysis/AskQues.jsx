@@ -23,12 +23,15 @@ import {
 } from "lucide-react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const FREE_TRIAL_CHAT_LIMIT = 3;
 
 export default function AskQuestion() {
 
     const [open,setOpen]=useState(false);
     const [question,setQuestion]=useState("");
-    const [loading,setLoading]=useState(false);
+    const [loading, setLoading] = useState(false);
+    const [chatsLeft, setChatsLeft] = useState(null);
+    
     const [messages,setMessages]=useState([
         {
             role:"assistant",
@@ -36,6 +39,8 @@ export default function AskQuestion() {
         }
 
     ]);
+
+    const noChatsLeft = chatsLeft !== null && chatsLeft <= 0;
 
     const askQuestion = async () => {
 
@@ -65,13 +70,16 @@ export default function AskQuestion() {
                     withCredentials:true
                 }
             );
-            console.log(res);
             setMessages(prev=>([...prev,
                 {
                     role:"assistant",
                     content:res.data.response || "Sorry, I couldn't answer that."
                 }
             ]));
+
+            if (typeof res.data.chatsLeft === "number") {
+                setChatsLeft(res.data.chatsLeft);
+            }
 
         } catch {
             toast.error("Failed to get answer!");
@@ -117,6 +125,22 @@ export default function AskQuestion() {
                     <DialogTitle>
                         Ask LegitCheck
                     </DialogTitle>
+
+                    {chatsLeft !== null && (
+                        <span
+                            className={`text-xs font-medium rounded-full px-2.5 py-1 ${
+                                noChatsLeft
+                                    ? "bg-red-100 text-red-700"
+                                    : chatsLeft <= 2
+                                    ? "bg-amber-100 text-amber-700"
+                                    : "bg-neutral-100 text-neutral-600"
+                            }`}
+                        >
+                            {noChatsLeft
+                                ? "No questions left"
+                                : `${chatsLeft} question${chatsLeft === 1 ? "" : "s"} left`}
+                        </span>
+                    )}
                 </DialogHeader>
 
                 <div className="h-[500px] overflow-y-auto p-5 space-y-4">
@@ -201,6 +225,11 @@ export default function AskQuestion() {
                             </div>
                         )
                     }
+                    {noChatsLeft && (
+                        <div className="text-center text-xs text-muted-foreground border rounded-lg py-3 px-4 bg-muted/40">
+                            You've used all your questions for this contract.
+                        </div>
+                    )}
                 </div>
 
                 <div className="px-5 pb-3 flex flex-wrap gap-2">
@@ -250,7 +279,7 @@ export default function AskQuestion() {
                         }}
                     />
 
-                    <Button onClick={askQuestion} disabled={loading} size="icon"
+                    <Button onClick={askQuestion} disabled={loading || noChatsLeft} size="icon"
                     >
                         <Send />
                     </Button>

@@ -16,8 +16,6 @@ export default function FullPageLoader() {
                     priority
                     className="
                         animate-bounce
-                        duration-700
-                        w-auto h-auto
                     "
                 />
 

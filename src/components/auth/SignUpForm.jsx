@@ -25,6 +25,7 @@ export default function SignUpForm() {
     confirmPassword: "",
     agreed: false,
   });
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -101,6 +102,12 @@ export default function SignUpForm() {
       setIsLoading(false);
     }
 
+  }
+
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    window.location.href = (`${BASE_URL}/oauth/login`);
+    router.push("/")
   }
 
   async function onSubmit(e) {
@@ -264,6 +271,24 @@ export default function SignUpForm() {
               Create account
             </Button>
           </form>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or
+              </span>
+            </div>
+          </div>
+          
+          <div className="flex">
+            <Button onClick={() => {handleGoogleSignIn()}} disabled={isGoogleLoading} className="btn-secondary btn w-full cursor-pointer">
+              {isGoogleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Sign in with Google
+            </Button>
+          </div>
 
           <div className="pt-2">
             <p className="mt-4 text-center text-xs text-slate-500">

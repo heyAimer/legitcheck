@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Loader2, Menu } from "lucide-react";
+import { Loader2, LogOut, Menu } from "lucide-react";
 
 import {
   NavigationMenu,
@@ -23,6 +23,12 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { useState } from "react";
 import { useAuthContext } from "@/utils/providers/AuthProvider";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import UserMenu from "@/utils/UserMenu";
+import toast from "react-hot-toast";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 const PRODUCT_ITEMS = [
   {
@@ -72,9 +78,25 @@ const scrollToSection = (id) => {
 
 export function Navbar() {
     const { data } = useAuthContext();
+    const router = useRouter();
     const [open, setOpen] = useState(false);
 
     const userLoggedIn = data?.data?.authenticated === true;
+    const user = data?.data?.userName;
+    
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
+            if (response.status === 200) {
+                toast.success("Logged out successfully.");
+                router.replace("/signin");
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
+        } catch {
+            toast.error("Something went wrong. Please try again.");
+        }
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md">
@@ -142,11 +164,11 @@ export function Navbar() {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
 
-                                <NavigationMenuItem>
+                                {!userLoggedIn && <NavigationMenuItem>
                                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                                     <button onClick={() => scrollToSection("pricing")} className="cursor-pointer">Pricing</button>
                                     </NavigationMenuLink>
-                                </NavigationMenuItem>
+                                </NavigationMenuItem>}
 
                             </NavigationMenuList>
                         </NavigationMenu>
@@ -154,16 +176,14 @@ export function Navbar() {
                     
                     <div className="hidden md:flex gap-4 items-center">
                         {userLoggedIn ? (
-                            <Link href="/upload">
-                            <Button>
-                                Try free analysis
-                            </Button>
-                            </Link>
+                            <div className="flex items-center gap-3 shrink-0">
+                                <UserMenu user={user} onLogout={handleLogout} />
+                            </div>
                         ) : (
                             <Link href="/signin">
-                            <Button variant="outline">
-                                Sign in
-                            </Button>
+                                <Button variant="outline">
+                                    Sign in
+                                </Button>
                             </Link>
                         )}
                     </div>
@@ -192,6 +212,13 @@ export function Navbar() {
 }
 
 function MobileNav({ userLoggedIn, closeMenu }) {
+    const router = useRouter();
+     const handleLogout = async () => {
+        const response = await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
+        if (response.status === 200) {
+            router.replace("/signin");
+        }
+    };
     const handleNavigate = (id) => {
         closeMenu();
 
@@ -232,17 +259,18 @@ function MobileNav({ userLoggedIn, closeMenu }) {
 
             <div className="border-t pt-6 flex flex-col gap-3">
                 {userLoggedIn ? (
-                <Link href="/upload" onClick={closeMenu}>
-                    <Button>
-                        Try free analysis
-                    </Button>
-                </Link>
-                ) : (
-                <Link href="/signin" onClick={closeMenu}>
-                    <Button variant="outline" className="w-full">
-                        Sign in
-                    </Button>
-                </Link>
+                    <div className="">
+                        <Button variant="destructive" className="w-full text-white" onClick={handleLogout}>
+                            <LogOut className="mr-2 h-4 w-4" />
+                            <div>Log out</div>
+                        </Button>
+                    </div>
+                    ) : (
+                    <Link href="/signin" onClick={closeMenu}>
+                        <Button variant="outline" className="w-full">
+                            Sign in
+                        </Button>
+                    </Link>
                 )}
             </div>
          </nav>
