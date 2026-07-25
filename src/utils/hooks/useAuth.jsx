@@ -17,6 +17,5 @@ export const useAuth = () => {
         retry: false, // Don't retry on failure
         staleTime: 1000 * 60 * 5, // Cache for 5 minutes
         refetchOnWindowFocus: false,
-        refetchOnMount:false
     })
 };

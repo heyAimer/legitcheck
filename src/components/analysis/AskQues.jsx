@@ -306,19 +306,43 @@ export default function AskQuestion({chatsLeft, setChatsLeft}) {
                         }}
                     />
 
-                    <Button onClick={askQuestion} disabled={loading || noChatsLeft || !question.trim()} size="icon"
+                    {!noChatsLeft && (
+                        <div className="flex justify-end">
+                            <div
+                            className="relative flex h-8 w-8 items-center justify-center rounded-full"
+                            style={{
+                                background: `conic-gradient(${
+                                question.length >= MAX_QUESTION_LENGTH
+                                    ? "#ef4444"
+                                    : question.length >= MAX_QUESTION_LENGTH * 0.8
+                                    ? "#f59e0b"
+                                    : "#22c55e"
+                                } ${(question.length / MAX_QUESTION_LENGTH) * 360}deg, #e5e7eb 0deg)`,
+                            }}
+                            >
+                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-background">
+                                <span
+                                className={`text-[10px] font-semibold ${
+                                    question.length >= MAX_QUESTION_LENGTH
+                                    ? "text-red-600"
+                                    : question.length >= MAX_QUESTION_LENGTH * 0.8
+                                    ? "text-amber-600"
+                                    : "text-muted-foreground"
+                                }`}
+                                >
+                                {MAX_QUESTION_LENGTH - question.length}
+                                </span>
+                            </div>
+                            </div>
+                        </div>
+                        )}
+                    
+                    <Button onClick={askQuestion} disabled={loading || noChatsLeft || !question.trim()} size="icon" className="flex shrink-0 pr-[1px] pt-[1px]"
                     >
                         <Send />
                     </Button>
                 </div>
 
-                {!noChatsLeft && (
-                    <p className={`text-[11px] mt-1 text-right ${
-                        question.length >= MAX_QUESTION_LENGTH ? "text-red-500" : "text-muted-foreground"
-                    }`}>
-                        {question.length}/{MAX_QUESTION_LENGTH}
-                    </p>
-                )}
             </DialogContent>
         </Dialog>
     )

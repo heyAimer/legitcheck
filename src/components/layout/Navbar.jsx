@@ -78,7 +78,7 @@ const scrollToSection = (id) => {
 }
 
 export function Navbar() {
-    const { data } = useAuthContext();
+    const { data , isLoading } = useAuthContext();
     const queryClient = useQueryClient();
     const router = useRouter();
     const [open, setOpen] = useState(false);
@@ -173,23 +173,28 @@ export function Navbar() {
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
 
-                                {!userLoggedIn && <NavigationMenuItem>
+                               <NavigationMenuItem>
                                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                                     <button onClick={() => scrollToSection("pricing")} className="cursor-pointer">Pricing</button>
                                     </NavigationMenuLink>
-                                </NavigationMenuItem>}
+                                </NavigationMenuItem>
 
                             </NavigationMenuList>
                         </NavigationMenu>
                     </div>
                     
                     <div className="hidden md:flex gap-4 items-center">
-                        {userLoggedIn ? (
-                            <div className="flex items-center gap-3 shrink-0">
-                                <UserMenu user={user} onLogout={handleLogout} />
+                        {isLoading ? (
+                            <div className="w-[76px] flex items-center justify-center">
+                                <Loader2 className="animate-spin text-neutral-400/20" />
                             </div>
+                            
+                        ) : userLoggedIn ? (
+                                <div className="w-[76px] flex justify-center">
+                                    <UserMenu user={user} onLogout={handleLogout} />
+                                </div>
                         ) : (
-                            <Link href="/signin">
+                            <Link href="/signin" className="w-[76px]">
                                 <Button>
                                     Sign in
                                 </Button>
