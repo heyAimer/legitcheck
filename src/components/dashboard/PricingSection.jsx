@@ -51,7 +51,7 @@ export const pricingPlans = [
     features: [
       "15 credits = 15 full contract scans",
       "Full contract risk report for each scan",
-      "15 chat questions per contract",
+      "10 chat questions per contract",
       "Downloadable PDF reports",
     ],
   },
@@ -98,6 +98,51 @@ export default function PricingSection() {
             review agreements regularly.
           </p>
         </div>
+
+        <div className="mb-10 rounded-2xl border border-blue-200 bg-blue-50/60 p-5 md:p-6">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-5">
+                <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">
+                  Free trial
+                </span>
+                <span className="text-sm font-medium text-blue-700">
+                  No payment needed
+                </span>
+              </div>
+
+              <h3 className="text-xl font-semibold text-neutral-900">
+                Try LegitCheck with 1 free contract scan
+              </h3>
+
+              <p className="max-w-2xl text-sm text-neutral-600 leading-relaxed">
+                Upload one contract for free and get a plain-English risk analysis,
+                downloadable PDF report, and 3 chat questions to understand the contract
+                before you sign.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:min-w-[430px]">
+              <div className="rounded-xl bg-white border border-blue-100 p-4">
+                <p className="text-lg font-semibold text-neutral-900">1</p>
+                <p className="text-xs text-neutral-500">Free scan</p>
+              </div>
+
+              <div className="rounded-xl bg-white border border-blue-100 p-4">
+                <p className="text-lg font-semibold text-neutral-900">3</p>
+                <p className="text-xs text-neutral-500">Chat questions</p>
+              </div>
+
+              <div className="rounded-xl bg-white border border-blue-100 p-4">
+                <p className="text-lg font-semibold text-neutral-900">PDF</p>
+                <p className="text-xs text-neutral-500">Report included</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {pricingPlans.map((plan) => (
