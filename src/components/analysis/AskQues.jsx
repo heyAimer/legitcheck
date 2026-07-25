@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const MAX_QUESTION_LENGTH = 300;
 
 export default function AskQuestion({chatsLeft, setChatsLeft}) {
 
@@ -40,11 +41,16 @@ export default function AskQuestion({chatsLeft, setChatsLeft}) {
     const noChatsLeft = typeof chatsLeft === "number" && chatsLeft <= 0;
 
     const askQuestion = async () => {
+        const trimmed = question.trim();
+        if (!trimmed) return;
 
-        if(!question.trim()) return;
-
-        const userQuestion = question;
-
+        if (trimmed.length > MAX_QUESTION_LENGTH) {
+            toast.error(`Please keep your question under ${MAX_QUESTION_LENGTH} characters.`);
+        return;
+        }
+        
+        const userQuestion = trimmed;
+        
         setMessages(prev => ([
             ...prev,
             {
@@ -252,12 +258,14 @@ export default function AskQuestion({chatsLeft, setChatsLeft}) {
                         onClick={() => setQuestion(
                             "Why is indemnity risky?"
                         )}
+                        disabled={noChatsLeft} 
                     >
                         Indemnity
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => setQuestion(
                         "Explain this IP clause"
                     )}
+                        disabled={noChatsLeft} 
                     >
                         IP Clause
                     </Button>
@@ -268,6 +276,7 @@ export default function AskQuestion({chatsLeft, setChatsLeft}) {
                         onClick={() => setQuestion(
                             "Can I negotiate this?"
                         )}
+                        disabled={noChatsLeft} 
                     >
                         Negotiate
                     </Button>
@@ -281,6 +290,7 @@ export default function AskQuestion({chatsLeft, setChatsLeft}) {
                             )
                         }
                         disabled={loading || noChatsLeft}
+                        maxLength={MAX_QUESTION_LENGTH}
                         placeholder={
                             noChatsLeft ? "No questions left for this contract" : "Ask about this contract..."
                         }
@@ -296,11 +306,19 @@ export default function AskQuestion({chatsLeft, setChatsLeft}) {
                         }}
                     />
 
-                    <Button onClick={askQuestion} disabled={loading || noChatsLeft} size="icon"
+                    <Button onClick={askQuestion} disabled={loading || noChatsLeft || !question.trim()} size="icon"
                     >
                         <Send />
                     </Button>
                 </div>
+
+                {!noChatsLeft && (
+                    <p className={`text-[11px] mt-1 text-right ${
+                        question.length >= MAX_QUESTION_LENGTH ? "text-red-500" : "text-muted-foreground"
+                    }`}>
+                        {question.length}/{MAX_QUESTION_LENGTH}
+                    </p>
+                )}
             </DialogContent>
         </Dialog>
     )

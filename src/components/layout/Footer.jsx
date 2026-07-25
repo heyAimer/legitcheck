@@ -104,7 +104,7 @@ export default function Footer() {
                 width={36}
                 height={36}
                 priority
-                className="rounded-md h-auto w-auto"
+                className="rounded-md h-9 w-9"
               />
               <h3 className="text-lg font-semibold text-slate-900">
                 LegitCheck

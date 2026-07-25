@@ -15,7 +15,7 @@ export default function FullPageLoader() {
                     height={64}
                     priority
                     className="
-                        animate-bounce
+                        animate-bounce w-16 h-16 
                     "
                 />
 

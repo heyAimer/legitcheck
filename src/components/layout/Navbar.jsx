@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import UserMenu from "@/utils/UserMenu";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -78,6 +79,7 @@ const scrollToSection = (id) => {
 
 export function Navbar() {
     const { data } = useAuthContext();
+    const queryClient = useQueryClient();
     const router = useRouter();
     const [open, setOpen] = useState(false);
 
@@ -87,12 +89,19 @@ export function Navbar() {
     const handleLogout = async () => {
         try {
             const response = await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
-            if (response.status === 200) {
-                toast.success("Logged out successfully.");
-                router.replace("/signin");
-            } else {
-                toast.error("Something went wrong. Please try again.");
-            }
+            queryClient.setQueryData(["auth"], {
+                data: {
+                    authenticated: false,
+                    userName: null
+                },
+            });
+            console.log("the logoed : ", response);
+            queryClient.removeQueries({
+                queryKey: ["auth"],
+            });
+
+            toast.success(response.data.message);
+            router.replace("/signin");
         } catch {
             toast.error("Something went wrong. Please try again.");
         }
@@ -111,7 +120,7 @@ export function Navbar() {
                             width={28}
                             height={28}
                             priority
-                            className="rounded-md h-auto w-auto"
+                            className="rounded-md h-7 w-7"
                         />
 
                         <h3 className="text-lg font-semibold text-slate-900">
@@ -181,7 +190,7 @@ export function Navbar() {
                             </div>
                         ) : (
                             <Link href="/signin">
-                                <Button variant="outline">
+                                <Button>
                                     Sign in
                                 </Button>
                             </Link>
@@ -265,12 +274,19 @@ function MobileNav({ userLoggedIn, closeMenu }) {
                             <div>Log out</div>
                         </Button>
                     </div>
-                    ) : (
-                    <Link href="/signin" onClick={closeMenu}>
-                        <Button variant="outline" className="w-full">
-                            Sign in
-                        </Button>
-                    </Link>
+                ) : (
+                        <>
+                        <Link href="/signin" onClick={closeMenu}>
+                            <Button className="w-full">
+                                Sign in
+                            </Button>
+                            </Link>
+                            <Link href="/signup" onClick={closeMenu}>
+                                <Button className="w-full" variant="outline">
+                                    Sign up
+                                </Button>
+                            </Link>
+                        </>
                 )}
             </div>
          </nav>
