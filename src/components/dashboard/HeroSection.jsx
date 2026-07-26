@@ -67,13 +67,9 @@ export default function HeroSection() {
             </Button>
           </Link>
 
-          <Link
-            href="/sample-report"
-          >
-            <Button className="" variant="secondary" size="lg" onClick={() => scrollToSection("demo")} >
-              Watch demo
-            </Button>
-          </Link>
+          <Button className="" variant="secondary" size="lg" onClick={() => scrollToSection("demo")} >
+            Watch demo
+          </Button>
         </div>
       </div>
     </section>
