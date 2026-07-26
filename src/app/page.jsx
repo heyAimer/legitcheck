@@ -4,6 +4,7 @@ import OutcomeSection from "@/components/dashboard/OutcomeSection";
 import PricingSection from "@/components/dashboard/PricingSection";
 import WorkingSection from "@/components/dashboard/WorkingSection";
 import UseCaseSection from "@/components/dashboard/UseCaseSection";
+import DemoSection from "@/components/dashboard/DemoSection";
 export default function DashboardPage() {
     return (
         <div className="min-h-screen w-full relative">
@@ -54,6 +55,7 @@ export default function DashboardPage() {
                 }}
             />
             <HeroSection />
+            <DemoSection/>
             <OutcomeSection />
             <UseCaseSection />
             <WorkingSection />

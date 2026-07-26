@@ -3,6 +3,20 @@ import GradientRing from "@/utils/GradientRings";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useAuthContext } from "@/utils/providers/AuthProvider";
+
+const scrollToSection = (id) => {
+  const section = document.getElementById(id)
+
+  if (section) {
+      section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      })
+  } else {
+      window.location.href = `/#${id}`
+  }
+}
+
 export default function HeroSection() {
 
   const { data } = useAuthContext();
@@ -56,7 +70,7 @@ export default function HeroSection() {
           <Link
             href="/sample-report"
           >
-            <Button className="" variant="secondary" size="lg">
+            <Button className="" variant="secondary" size="lg" onClick={() => scrollToSection("demo")} >
               Watch demo
             </Button>
           </Link>
