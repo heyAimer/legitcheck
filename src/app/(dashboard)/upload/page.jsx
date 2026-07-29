@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, ShieldCheck, Scale, Brain, X, Loader2, WifiOff, FileSearch, MessageCircle, Crown, Sparkles } from "lucide-react";
+import { Upload, ShieldCheck, Scale, Brain, X, Loader2, WifiOff, FileSearch, MessageCircle, Crown, Sparkles, AlertCircle } from "lucide-react";
 
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -216,22 +216,29 @@ export default function UploadContractPage() {
                     <Sparkles className="h-5 w-5" />
                     {entitlement.subscription?.subscriptionName}
                   </span>
-                ) : (
-                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-yellow-600 bg-yellow-50 rounded-sm px-4 py-2 border border-yellow-400">
+                ) : entitlement?.subscription?.subscriptionName === "Expired" ? (
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-sm px-4 py-2 border border-red-400">
+                      <AlertCircle className="h-5 w-5" />
+                      {entitlement.subscription.subscriptionName}
+                    </span>
+                  ) : (
+                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-yellow-600 bg-yellow-50 rounded-sm px-4 py-2 border border-yellow-400">
                       <Crown className="h-5 w-5" />
                       {entitlement.subscription.subscriptionName}
                     </span>
                 )}
 
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
-                  <FileSearch className="h-5 w-5 text-yellow-600" />
-                  {entitlement.subscription.scans} scan{entitlement.subscription.scans === 1 ? "" : "s"} left
-                </span>
+                {entitlement?.subscription?.subscriptionName !== "Expired" && (<>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
+                    <FileSearch className="h-5 w-5 text-yellow-600" />
+                    {entitlement.subscription.scans} scan{entitlement.subscription.scans === 1 ? "" : "s"} 
+                  </span>
 
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
-                  <MessageCircle className="h-5 w-5 text-blue-600" />
-                  {entitlement.subscription.questionsLeft} question{entitlement.subscription.questionsLeft === 1 ? "" : "s"} left
-                </span>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 bg-neutral-100/60 rounded-sm px-4 py-2 border border-neutral-200">
+                    <MessageCircle className="h-5 w-5 text-blue-600" />
+                    {entitlement.subscription.questionsLeft} question{entitlement.subscription.questionsLeft === 1 ? "" : "s"} 
+                  </span>
+                </>)}
               </>
             )}
           </div>
@@ -390,7 +397,7 @@ export default function UploadContractPage() {
               </div>
 
               {entitlement && !canAnalyze ? (
-                <div className="w-full max-w-xs text-center space-y-2 border border-dashed rounded-lg p-4">
+                <div className="w-full max-w-xs text-center space-y-2 border border-dashed border-red-300 bg-red-200/20 rounded-lg p-4">
                   <p className="text-sm font-medium">You've used your free scan</p>
                   <p className="text-xs text-muted-foreground">
                     Buy credits to analyze more contracts.

@@ -95,7 +95,6 @@ export function Navbar() {
                     userName: null
                 },
             });
-            console.log("the logoed : ", response);
             queryClient.removeQueries({
                 queryKey: ["auth"],
             });
