@@ -84,7 +84,7 @@ export function Navbar() {
     const [open, setOpen] = useState(false);
 
     const userLoggedIn = data?.data?.authenticated === true;
-    const user = data?.data?.userName;
+    const user = data?.data;
     
     const handleLogout = async () => {
         try {
@@ -226,7 +226,12 @@ export function Navbar() {
 
 function MobileNav({ userLoggedIn, closeMenu }) {
     const router = useRouter();
-     const handleLogout = async () => {
+    const { data , isLoading } = useAuthContext();
+
+    const user = data?.data;
+
+    const handleLogout = async () => {
+        closeMenu();
         const response = await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
         if (response.status === 200) {
             router.replace("/signin");
@@ -244,6 +249,13 @@ function MobileNav({ userLoggedIn, closeMenu }) {
     
     return (
         <nav className="mt-8 flex flex-col gap-6 font-semibold">
+            <div className="border-b">
+            {userLoggedIn ? (
+                <div className="w-[40px] flex justify-center">
+                    <UserMenu user={user} onLogout={handleLogout} />
+                </div>
+                ) : null}
+            </div>
             {/* PRODUCT */}
             <div>
                 <p className="mb-4 text-sm text-muted-foreground">Product</p>
@@ -270,27 +282,27 @@ function MobileNav({ userLoggedIn, closeMenu }) {
 
             <button onClick={() => handleNavigate("pricing")} className="cursor-pointer text-start bg-secondary hover:bg-primary/10 py-2 px-3 rounded-sm">Pricing</button>
 
-            <div className="border-t pt-6 flex flex-col gap-3">
+            <div className="border-t py-6 flex flex-col gap-3">
                 {userLoggedIn ? (
-                    <div className="">
+                    <div className="space-y-4">
                         <Button variant="destructive" className="w-full text-white" onClick={handleLogout}>
                             <LogOut className="mr-2 h-4 w-4" />
                             <div>Log out</div>
                         </Button>
                     </div>
                 ) : (
-                        <>
-                        <Link href="/signin" onClick={closeMenu}>
-                            <Button className="w-full">
-                                Sign in
+                    <>
+                    <Link href="/signin" onClick={closeMenu}>
+                        <Button className="w-full">
+                            Sign in
+                        </Button>
+                        </Link>
+                        <Link href="/signup" onClick={closeMenu}>
+                            <Button className="w-full" variant="outline">
+                                Sign up
                             </Button>
-                            </Link>
-                            <Link href="/signup" onClick={closeMenu}>
-                                <Button className="w-full" variant="outline">
-                                    Sign up
-                                </Button>
-                            </Link>
-                        </>
+                        </Link>
+                    </>
                 )}
             </div>
          </nav>

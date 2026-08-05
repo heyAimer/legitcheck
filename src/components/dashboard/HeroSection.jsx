@@ -70,7 +70,12 @@ export default function HeroSection() {
           <Button className="" variant="secondary" size="lg" onClick={() => scrollToSection("demo")} >
             Watch demo
           </Button>
+
+          <a href="https://smollaunch.com" target="_blank" rel="noopener">
+            <img src="https://smollaunch.com/badges/featured-dark.svg" alt="LegitCheck — Featured on Smol Launch" loading="lazy" width="170" height="50" />
+          </a>
         </div>
+
       </div>
     </section>
   );
